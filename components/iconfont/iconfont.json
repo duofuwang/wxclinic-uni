@@ -1,0 +1,23 @@
+{
+  "id": "2391970",
+  "name": "health",
+  "font_family": "iconfont",
+  "css_prefix_text": "",
+  "description": "健康",
+  "glyphs": [
+    {
+      "icon_id": "17605458",
+      "name": "检查",
+      "font_class": "visit",
+      "unicode": "e814",
+      "unicode_decimal": 59412
+    },
+    {
+      "icon_id": "17605475",
+      "name": "历史",
+      "font_class": "appointment",
+      "unicode": "e817",
+      "unicode_decimal": 59415
+    }
+  ]
+}
