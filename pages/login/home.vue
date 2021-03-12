@@ -26,8 +26,8 @@
 			<text class="text-grey">获得你微信绑定的手机号</text>
 		</view>
 		<view class="padding">
-			<u-button class='bottom' shape='circle' type='success' open-type="getUserInfo" withCredentials="true" lang="zh_CN"
-			 @getuserinfo="getUserInfo" :loading="logging">
+			<u-button class='bottom' shape='circle' type='success' open-type="getUserProfile" withCredentials="true" lang="zh_CN"
+			 @click="getUserProfile" :loading="logging">
 				{{ comfirm }}
 			</u-button>
 		</view>
@@ -98,25 +98,27 @@
 			})
 		},
 		methods: {
-			getUserInfo(e) {
+			getUserProfile(e) {
 				const that = this;
 				that.logging = true;
 				that.comfirm = '登录中';
-				// code获取成功后获取用户信息userInfo
-				uni.getUserInfo({
+				// wx.login()后获取用户信息userInfo
+				uni.getUserProfile({
+					desc: '登录',
 					lang: "zh_CN",
-					success(info_res) {
-						console.log("user info---------------------")
-						console.log(info_res);
-						console.log("user info---------------------")
-
-						// 更新用户公开信息
-						that.rawData = info_res.rawData;
-						that.signature = info_res.signature;
-						that.userInfo = info_res.userInfo;
-
-						// 进行手机号授权
-						that.modalName = "bottomModal"
+					success: (profile_res) => {
+						that.userInfo = profile_res.userInfo
+						uni.getUserInfo({
+							lang: "zh_CN",
+							success(info_res) {
+								// 更新用户公开信息
+								that.rawData = info_res.rawData;
+								that.signature = info_res.signature;
+						
+								// 进行手机号授权
+								that.modalName = "bottomModal"
+							}
+						})
 					}
 				})
 			},
@@ -135,9 +137,7 @@
 					// 进行登录
 					this.hideModal()
 					this.wxLogin()
-					
 				}
-
 			},
 
 			// 向后台提交信息进行登录
