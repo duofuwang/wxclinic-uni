@@ -6,8 +6,8 @@
 
 [ColorUI][2]
 
-[uview][3]
+[uView][3]
 
-[1]:https://uniapp.dcloud.io/ "Markdown"
-[2]:https://github.com/weilanwl/ColorUI "Markdown"
-[3]:https://github.com/YanxinNet/uView "Markdown"
+[1]:https://uniapp.dcloud.io/ "uni-app"
+[2]:https://github.com/weilanwl/ColorUI "ColorUI"
+[3]:https://github.com/YanxinNet/uView "uView"
