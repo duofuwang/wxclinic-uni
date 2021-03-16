@@ -1,5 +1,10 @@
-## 前言
-基于uniapp的个人诊所微信小程序
+## wxclinic-uni
+
+[![6s2UC8.png](https://s3.ax1x.com/2021/03/16/6s2UC8.png)](https://imgtu.com/i/6s2UC8)
+[![6s2JEt.png](https://s3.ax1x.com/2021/03/16/6s2JEt.png)](https://imgtu.com/i/6s2JEt)
+[![6s2YUP.png](https://s3.ax1x.com/2021/03/16/6s2YUP.png)](https://imgtu.com/i/6s2YUP)
+[![6s2t4f.png](https://s3.ax1x.com/2021/03/16/6s2t4f.png)](https://imgtu.com/i/6s2t4f)
+[![6s28HI.png](https://s3.ax1x.com/2021/03/16/6s28HI.png)](https://imgtu.com/i/6s28HI)
 
 ## 感谢
 [uni-app][1]

@@ -117,6 +117,7 @@
 					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="logout">退出登录</button>
 				</view>
 			</view>
+			<view class="cu-tabbar-height"></view>
 
 			<view class="margin-top margin-bottom-xxl">
 				<view style="width: 90%; margin: 0 auto;">
