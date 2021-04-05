@@ -42,7 +42,7 @@
 						<text>身体健康 生活愉快</text>
 					</view>
 					<view style="float: right;">
-						<view><button class="cu-btn bg-green-new round shadow-blur">修改资料</button></view>
+						<view><button class="cu-btn bg-green-new round shadow-blur" @click="editProfile">修改资料</button></view>
 					</view>
 				</view>
 			</view>
@@ -193,6 +193,8 @@
 
 	export default {
 		name: "account",
+		props: {
+		},
 		data() {
 			return {
 				user: {},
@@ -205,16 +207,14 @@
 			...mapState(['hasLogin', 'userInfo'])
 		},
 		mounted() {
-			let that = this;
-			uni.getStorage({
-				key: 'userInfo',
-				success: (res) => {
-					if (res != null) {
-						that.user = res.data;
-					}
-
-				}
-			})
+			this.user = uni.getStorageSync("userInfo")
+			
+			// 监听更新事件
+			this.onUpdate();
+		},
+		beforeDestroy() {
+			// 移除监听事件
+			uni.$off('add', this.add)
 		},
 		methods: {
 			login() {
@@ -235,6 +235,20 @@
 						url: '../index/index'
 					});
 				}, 1000)
+			},
+			
+			// 修改资料
+			editProfile() {
+				uni.navigateTo({
+					url: '/pages/account/profile'
+				})
+			},
+			
+			// 更新内容
+			onUpdate() {
+				uni.$on('update', data => {
+					this.user = uni.getStorageSync("userInfo")
+				})
 			},
 
 			getAllUser() {

@@ -4,8 +4,12 @@ import store from './store'
 
 import api from './api/request.js'
 import global from './api/global.js'
+import websocket from './libs/websocket.js'
+
+
 Vue.prototype.GLOBAL = global
 Vue.prototype.$api = api
+Vue.prototype.websocket = websocket
 
 import uView from "uview-ui";
 Vue.use(uView);
@@ -34,3 +38,5 @@ const app = new Vue({
 	store
 })
 app.$mount()
+
+export default app

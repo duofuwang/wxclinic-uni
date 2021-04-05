@@ -1,0 +1,25 @@
+{
+  "name": "wxclinic-demo",
+  "version": "1.0.0",
+  "description": "wxclinic-uni",
+  "main": "main.js",
+  "dependencies": {
+    "vuex": "^3.6.2",
+    "uview-ui": "^1.8.3",
+    "prettier": "^1.12.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/duofuwang/wxclinic-uni.git"
+  },
+  "author": "wangfuofu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/duofuwang/wxclinic-uni/issues"
+  },
+  "homepage": "https://github.com/duofuwang/wxclinic-uni#readme"
+}

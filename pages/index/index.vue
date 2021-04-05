@@ -1,12 +1,8 @@
 <template>
 	<view>
 		<basics v-if="PageCur=='basics'" @changeTab="changeTab"></basics>
-		<components v-if="PageCur=='component'"
-			@signMsg="signMsg"
-			@updateContactList="updateContactList"
-			:unreadMsgList="unreadMsgList"
-			:unreadNum="unreadNum"
-			:contactList="contactList"></components>
+		<components v-if="PageCur=='component'" @signMsg="signMsg" @updateContactList="updateContactList"
+			:unreadMsgList="unreadMsgList" :unreadNum="unreadNum" :contactList="contactList"></components>
 		<plugin v-if="PageCur=='plugin'"></plugin>
 		<account v-if="PageCur=='account'"></account>
 		<view class="cu-bar tabbar bg-white shadow foot">
@@ -16,7 +12,8 @@
 						<text :class="PageCur=='basics'?'text-green-new':'text-gray'" class="text-xl">首页</text>
 						<!-- <view class="cu-tag badge" style="right: -25rpx;">22</view> -->
 					</view>
-					<text :class="PageCur=='basics'?'bg-green-new':'bg-gray'" class="round" style="left: 50%;transform: translate(-50%, 50%);"></text>
+					<text :class="PageCur=='basics'?'bg-green-new':'bg-gray'" class="round"
+						style="left: 50%;transform: translate(-50%, 50%);"></text>
 				</view>
 			</view>
 			<view class="action" @click="NavChange" data-cur="component">
@@ -25,7 +22,8 @@
 						<text :class="PageCur=='component'?'text-green-new':'text-gray'" class="text-xl">问诊</text>
 						<view class="cu-tag badge" v-if="newMsg" style="right: -25rpx;">{{newMsg?unreadNum:''}}</view>
 					</view>
-					<text :class="PageCur=='component'?'bg-green-new':'bg-gray'" class="round" style="left: 50%;transform: translate(-50%, 50%);"></text>
+					<text :class="PageCur=='component'?'bg-green-new':'bg-gray'" class="round"
+						style="left: 50%;transform: translate(-50%, 50%);"></text>
 				</view>
 
 			</view>
@@ -35,7 +33,8 @@
 						<text :class="PageCur=='plugin'?'text-green-new':'text-gray'" class="text-xl">百科</text>
 						<!-- <view class="cu-tag badge" style="right: -25rpx;">22</view> -->
 					</view>
-					<text :class="PageCur=='plugin'?'bg-green-new':'bg-gray'" class="round" style="left: 50%;transform: translate(-50%, 50%);"></text>
+					<text :class="PageCur=='plugin'?'bg-green-new':'bg-gray'" class="round"
+						style="left: 50%;transform: translate(-50%, 50%);"></text>
 				</view>
 			</view>
 			<view class="action" @click="NavChange" data-cur="account">
@@ -44,7 +43,8 @@
 						<text :class="PageCur=='account'?'text-green-new':'text-gray'" class="text-xl">我的</text>
 						<!-- <view class="cu-tag badge" style="right: -25rpx;">22</view> -->
 					</view>
-					<text :class="PageCur=='account'?'bg-green-new':'bg-gray'" class="round" style="left: 50%;transform: translate(-50%, 50%);"></text>
+					<text :class="PageCur=='account'?'bg-green-new':'bg-gray'" class="round"
+						style="left: 50%;transform: translate(-50%, 50%);"></text>
 				</view>
 			</view>
 		</view>
@@ -55,12 +55,15 @@
 	import {
 		getUnreadMsg
 	} from '@/api/modules/message.js'
-	
+
 	import {
 		getContactList
-	}
-	from '@/api/modules/message.js'
-	
+	} from '@/api/modules/message.js'
+
+	import {
+		getUserInfo
+	} from '../../api/modules/user.js'
+
 	export default {
 		data() {
 			return {
@@ -70,13 +73,27 @@
 				unreadNum: 0,
 				unreadMsgList: [],
 				contactList: [],
-				hide: false
+				hide: false,
+
+				userInfo: null
 			}
 		},
 		onLoad() {
+			this.userInfo = uni.getStorageSync("userInfo")
+
+			console.log("socketOpen: ", this.websocket.socketOpen)
+
 			// 进行 websocket 连接
-			this.connectSocket()
+			if (!this.websocket.socketOpen) {
+				this.websocket.connect()
+					.then(res => {
+						this.websocket.init()
+					})
+			}
+
+			// 获取未读消息
 			this.getUnreadMsg()
+			// 获取联系人列表
 			this.getContactList()
 		},
 		onHide() {
@@ -86,18 +103,26 @@
 		onShow() {
 			console.log("index show")
 			// 从下级页面点返回露出当前页面，更新数据
-			if(this.hide) {
+			if (this.hide) {
 				this.getContactList()
 				this.getUnreadMsg()
 			}
-			
+
+			// 更新用户信息
+			this.getUserInfo()
+
+			// 更新account组件
+			this.updateAccountComponent()
+
 			// 进入其他页面时，uni.onSocketMessage会被覆盖
 			// 所以返回页面时重新启动消息监听
 			this.onSocketMessage()
 		},
 		onUnload() {
+			console.log("index unload")
 			// 关闭 websocket 连接
-			this.closeSocket()
+			this.websocket.close()
+			this.websocket.socketOpen = false
 		},
 		methods: {
 			NavChange: function(e) {
@@ -110,45 +135,12 @@
 				console.log("更新消息列表")
 				this.getContactList()
 			},
-			
-			// 进行 websocket 连接
-			connectSocket() {
-				uni.connectSocket({
-					url: 'ws://localhost:1024/channel'
-				});
-				uni.onSocketOpen(res => {
-					console.log('WebSocket连接已打开！');
-					this.socketOpen = true
-					this.initConnect(),
-						this.onSocketMessage()
-				});
-
-				uni.onSocketError(function(res) {
-					console.log('WebSocket连接打开失败，请检查！');
-				});
-			},
-
-			// 告诉后端是初始化连接
-			initConnect() {
-				console.log("初始化WebSocket连接")
-				var dataContent = this.GLOBAL.dataContent;
-				var msg = this.GLOBAL.message;
-				// 带上用户 id 用来处理和 channel 的关联关系
-				msg.from_id = uni.getStorageSync("userInfo").id;
-				dataContent.action = this.GLOBAL.action.CONNECT;
-				dataContent.message = msg;
-				
-				uni.sendSocketMessage({
-					data: JSON.stringify(dataContent)
-				});
-			},
 
 			// 监听消息接收
 			onSocketMessage() {
 				let that = this;
 				uni.onSocketMessage(function(res) {
 					console.log("index: ", JSON.parse(res.data))
-					// that.$store.commit("updateLastMsg", JSON.parse(res.data).message)
 					that.getUnreadMsg()
 					that.getContactList()
 				});
@@ -165,9 +157,9 @@
 			// 获取未读消息
 			getUnreadMsg() {
 				getUnreadMsg({
-					userId: uni.getStorageSync('userInfo').id
+					userId: this.userInfo.id
 				}).then(res => {
-					if(res.data.length > 0) {
+					if (res.data.length > 0) {
 						this.newMsg = true
 						this.unreadNum = res.data.length
 						this.unreadMsgList = res.data
@@ -178,28 +170,49 @@
 					console.log(data)
 				})
 			},
-			
+
 			signMsg() {
 				this.newMsg = false;
 				this.unreadNum = 0;
 				this.unreadMsgList = []
 			},
-			
+
 			// 获取最近会话列表和最后一条聊天记录
 			getContactList() {
 				getContactList({
-					userId: uni.getStorageSync("userInfo").id
+					userId: this.userInfo.id
 				}).then(res => {
-					if(res.success) {
-						console.log("getContactList success: ", res)
+					if (res.success) {
+						console.log("getContactList", res)
 						this.contactList = res.data
 					}
-				}).catch(data =>{
-					console.log("getContactList error: ", data)
+				}).catch(data => {
+					console.log("getContactList error", data)
+				})
+			},
+
+			// 获取用户信息
+			getUserInfo() {
+				getUserInfo({
+					userId: this.userInfo.id
+				}).then(res => {
+					console.log("getUserInfo", res)
+
+					if (res.success) {
+						uni.setStorageSync("userInfo", res.data)
+						this.userInfo = res.data
+					}
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+
+			// 更新account组件
+			updateAccountComponent() {
+				uni.$emit('update', {
+					msg: '更新account'
 				})
 			}
-			
-			
 		}
 	}
 </script>

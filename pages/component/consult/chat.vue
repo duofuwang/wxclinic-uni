@@ -59,13 +59,13 @@
 			</view>
 		</view>
 
-		<view class="cu-bar foot input" :style="[{bottom:InputBottom+'px'}]">
+		<view class="cu-bar foot input" :style="[{bottom:inputBottom+'px'}]">
 			<view class="action">
 				<text class="cuIcon-sound text-grey" v-if="isEdit" @click="toggleEdit(false)"></text>
 				<text class="cuIcon-keyboard text-grey" v-else @click="toggleEdit(true)"></text>
 			</view>
 			<input class="solid-bottom" :value="inputValue" @input="inputChange" :adjust-position="false" :focus="false"
-				maxlength="300" cursor-spacing="10" @focus="InputFocus" @blur="InputBlur"
+				maxlength="300" cursor-spacing="10" @focus="inputFocus" @blur="inputBlur"
 				@keyboardheightchange="keyboardHeightChange" v-if="isEdit"></input>
 
 			<button v-else class="cu-btn line-gray speak" @touchstart="startRecord"
@@ -117,7 +117,7 @@
 		},
 		data() {
 			return {
-				InputBottom: 0,
+				inputBottom: 0,
 				messageList: [],
 				userInfo: {},
 				inputValue: null,
@@ -145,36 +145,29 @@
 			};
 		},
 		onLoad(option) {
+			this.userInfo = uni.getStorageSync("userInfo");
+
+			// 监听录音动作
 			this.onRecordStop()
 
-			this.userInfo = uni.getStorageSync("userInfo");
+			// 获取上级页面传来的数据
 			this.contact = JSON.parse(decodeURIComponent(option.data)).contact;
 			this.unreadMsgList = JSON.parse(decodeURIComponent(option.data)).unreadMsgList
 
 			// 获取近期消息
-			getRecentMsg({
-				userId: this.userInfo.id,
-				friendId: this.contact.friendId,
-				num: 100
-			}).then(res => {
-				console.log("getRecentMsg", res)
-				this.messageList = res.data
-			}).catch(data => {
-				console.log(data)
-			})
+			this.getRecentMsg(this.userInfo.id, this.contact.friendId)
 
 			// 启动消息监听
 			this.onSocketMessage()
 
-			// 若有未读消息 则签收
 			// 过滤掉当前联系人以外的消息
 			var unreadMsgList = this.unreadMsgList.filter(item => item.fromId == this.contact.friendId)
+			// 若有未读消息 则签收
 			if (unreadMsgList.length > 0) {
 				var ids = ''
 				unreadMsgList.forEach(item => {
 					ids += item.id + ","
 				})
-				console.log("ids: ", ids)
 				this.signMessage(ids)
 			}
 		},
@@ -200,26 +193,37 @@
 		beforeDestroy() {
 			// 离开聊天页面时重置 messageList，防止新消息被签收
 			this.messageList = null
-			console.log("beforeDestroy: ", this.messageList)
+			console.log("beforeDestroy")
 		},
 		destroyed() {},
 		methods: {
-			InputFocus(e) {
-				this.InputBottom = e.detail.height
+			// 输入框聚焦
+			inputFocus(e) {
+				this.inputBottom = e.detail.height
+				// 关闭抽屉
 				this.openDrawer(false)
 			},
-			InputBlur(e) {
-				this.InputBottom = 0
+
+			// 输入框失去焦点
+			inputBlur(e) {
+				this.inputBottom = 0
 			},
+
+			// 键盘高度变化
 			keyboardHeightChange(e) {
-				this.InputBottom = e.detail.height
+				this.inputBottom = e.detail.height
 			},
+
+			// 输入框内容改变
 			inputChange(e) {
 				this.inputValue = e.detail.value
 			},
+
+			// 消息类型改变
 			messageTypeChange(type) {
 				this.messageType = type
 			},
+
 			// 切换语音与编辑
 			toggleEdit(bool) {
 				this.isEdit = bool
@@ -228,15 +232,17 @@
 				// 关闭底部抽屉
 				this.openDrawer(false)
 			},
+
 			// 打开底部抽屉
 			openDrawer(bool) {
 				this.isDrawer = bool;
 
+				// 使输入框悬浮在抽屉上方
 				setTimeout(() => {
 					uni.createSelectorQuery().select('#drawer').boundingClientRect(data => {
 						this.drawerHeight = data.height
 						console.log("drawerHeight: ", this.drawerHeight)
-						this.InputBottom = bool ? this.drawerHeight.toString() : "0"
+						this.inputBottom = bool ? this.drawerHeight.toString() : "0"
 					}).exec()
 				}, )
 			},
@@ -252,12 +258,14 @@
 				this.isRecording = false
 				recorderManager.stop()
 			},
+
 			// 播放录音
 			playVoice(item) {
 				console.log("play voice", JSON.parse(item))
 				innerAudioContext.src = JSON.parse(item).path;
 				innerAudioContext.play();
 			},
+
 			// 监听录音停止
 			onRecordStop() {
 				let self = this;
@@ -271,12 +279,25 @@
 				});
 			},
 
+			// 获取最近消息
+			getRecentMsg(userId, friendId) {
+				getRecentMsg({
+					userId: userId,
+					friendId: friendId,
+					num: 100
+				}).then(res => {
+					console.log("getRecentMsg", res)
+					this.messageList = res.data
+				}).catch(data => {
+					console.log(data)
+				})
+			},
+
 			// 录音文件上传
 			upload(filePath) {
 				console.log("upload filePath: ", filePath)
-				console.log(this.$api.upload)
 				uni.uploadFile({
-					url: this.$api.upload, //仅为示例，非真实的接口地址
+					url: this.$api.upload,
 					filePath: filePath,
 					name: 'file',
 					header: {
@@ -539,7 +560,6 @@
 					this.signMessage(message.id)
 				}
 			},
-
 
 			// 将新消息标记为已读
 			signMessage(ids) {

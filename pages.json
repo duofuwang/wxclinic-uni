@@ -104,7 +104,7 @@
 			"path": "pages/plugin/verticalnav",
 			"style": {}
 		}, {
-			"path": "pages/account/account",
+			"path": "pages/account/profile",
 			"style": {
 				"navigationBarTitleText": "",
 				"enablePullDownRefresh": false

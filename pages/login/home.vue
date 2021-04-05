@@ -1,6 +1,6 @@
 <template>
 	<view>
-		<cu-custom bgColor="bg-gradual-blue" :isBack="true">
+		<cu-custom bgColor="bg-gradual-blue">
 			<block slot="backText">返回</block>
 			<block slot="content">登录</block>
 		</cu-custom>
@@ -88,8 +88,9 @@
 			uni.login({
 				provider: "weixin",
 				success: (res) => {
-					console.log(res)
-					if (res.code != null) { //微信登录成功 已拿到code
+					console.log("code", res)
+					//微信登录成功 已拿到code
+					if (res.code != null) {
 						this.jsCode = res.code
 					} else {
 						console.log('登录失败！' + res.errMsg)
@@ -107,7 +108,7 @@
 					desc: '登录',
 					lang: "zh_CN",
 					success: (profile_res) => {
-						that.userInfo = profile_res.userInfo
+						// that.userInfo = profile_res.userInfo
 						uni.getUserInfo({
 							lang: "zh_CN",
 							success(info_res) {
@@ -123,12 +124,13 @@
 				})
 			},
 
+			// 获取手机号信息
 			getPhoneNumber(e) {
 				console.log("getphonenumber")
 				this.phoneLoading = true;
 				console.log(e.detail)
+				// 用户取消授权
 				if (e.detail.errMsg == "getPhoneNumber:fail user deny") {
-					// 用户取消授权
 					console.log("用户取消授权")
 				} else {
 					// 获取到加密的手机号信息
@@ -157,11 +159,10 @@
 					console.log(res)
 					if (res.success) {
 						// 登录成功
-						this.userInfo.phoneNumber = res.data.phoneNumber;
-						this.userInfo.id = res.data.id;
+						this.userInfo = res.data
 						console.log(this.userInfo)
 						this.$store.commit('login', this.userInfo);
-						uni.setStorageSync("token", res.data.token);
+						uni.setStorageSync("token", this.userInfo.token);
 						wx.hideLoading()
 						wx.showToast({
 							title: '登录成功',

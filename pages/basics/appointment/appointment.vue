@@ -8,17 +8,17 @@
 		<form @submit="formSubmit">
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<view class="cu-form-group margin-top">
-					<view class="title">预约人</view>
+					<view class="title text-bold">预约人</view>
 					<input :value="userInfo==null?'':userInfo.nickName" placeholder="昵称" disabled name="nickName"></input>
 				</view>
 				<view class="cu-form-group">
-					<view class="title">手机号码</view>
+					<view class="title text-bold">手机号码</view>
 					<input :value="userInfo==null?'':userInfo.phoneNumber" placeholder="预留手机号" name="phoneNumber"></input>
 					<text class='cuIcon-phone text-orange'></text>
 				</view>
 
 				<view class="cu-form-group margin-top">
-					<view class="title">就诊日期</view>
+					<view class="title text-bold">就诊日期</view>
 					<picker mode="date" :value="date" :start="date" end="2099-12-31" @change="DateChange" name="date">
 						<view class="picker">
 							{{date}}
@@ -26,7 +26,7 @@
 					</picker>
 				</view>
 				<view class="cu-form-group">
-					<view class="title">就诊时间</view>
+					<view class="title text-bold">就诊时间</view>
 					<picker mode="time" :value="time" start="00:00" end="23:59" @change="TimeChange" name="time">
 						<view class="picker">
 							{{time}}
@@ -48,7 +48,7 @@
 
 				<view class="cu-bar bg-white margin-top">
 					<view class="action">
-						图片上传（可选）
+						<text class="text-bold text-black">图片上传（可选）</text>
 					</view>
 					<view class="action">
 						{{imgList.length}}/4
