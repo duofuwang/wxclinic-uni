@@ -10,7 +10,8 @@
 
 			<view class="flex flex-wrap margin-top justify-between">
 				<navigator hover-class="none" url="/pages/basics/appointment/appointment">
-					<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+					<view class="flex flex-wrap bg-white margin-left-sm padding"
+						style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
 						<view class="basis-xs radius">
 							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 								<image src="/static/icon/appointment.png" mode="widthFix" class="view-image"></image>
@@ -28,7 +29,8 @@
 				</navigator>
 
 				<navigator hover-class="none" url="/pages/basics/visit/visit">
-					<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
+					<view class="flex flex-wrap bg-white margin-right-sm padding"
+						style="border-radius: 15rpx; width: 350rpx;">
 						<view class="basis-xs radius">
 							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 								<image src="/static/icon/visit.png" mode="widthFix" class="view-image"></image>
@@ -51,7 +53,8 @@
 			</view>
 
 			<view class="flex flex-wrap justify-between">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="goConsult">
+				<view class="flex flex-wrap bg-white margin-left-sm padding"
+					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="goConsult">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/consult.png" mode="widthFix" class="view-image"></image>
@@ -66,7 +69,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-right-sm padding"
+					style="border-radius: 15rpx; width: 350rpx;">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/record.png" mode="widthFix" class="view-image"></image>
@@ -84,7 +88,8 @@
 			</view>
 
 			<view class="flex flex-wrap justify-between margin-top-sm">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="viewProgress">
+				<view class="flex flex-wrap bg-white margin-left-sm padding"
+					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="viewProgress">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/loading.png" mode="widthFix" class="view-image"></image>
@@ -99,21 +104,24 @@
 						</view>
 					</view>
 				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/lightning.png" mode="widthFix" class="view-image"></image>
+				<navigator hover-class="none" url="/pages/basics/emergency/emergency">
+					<view class="flex flex-wrap bg-white margin-right-sm padding"
+						style="border-radius: 15rpx; width: 350rpx;">
+						<view class="basis-xs radius">
+							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+								<image src="/static/icon/lightning.png" mode="widthFix" class="view-image"></image>
+							</view>
+						</view>
+						<view class="padding-left-sm">
+							<view class="text-xl text-bold">
+								<text>紧急呼救</text>
+							</view>
+							<view class="text-gray">
+								<view>发送信息/定位</view>
+							</view>
 						</view>
 					</view>
-					<view class="padding-left-sm">
-						<view class="text-xl text-bold">
-							<text>紧急呼救</text>
-						</view>
-						<view class="text-gray">
-							<view>发送信息/定位</view>
-						</view>
-					</view>
-				</view>
+				</navigator>
 			</view>
 
 			<view class="padding-lr-sm padding-bottom-sm margin-top">
@@ -121,7 +129,8 @@
 			</view>
 
 			<view class="flex flex-wrap justify-between">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-left-sm padding"
+					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/feedback.png" mode="widthFix" class="view-image"></image>
@@ -186,7 +195,7 @@
 			goConsult() {
 				this.$emit("changeTab", "component");
 			},
-			
+
 			// 申请进度
 			viewProgress() {
 				console.log("申请进度")

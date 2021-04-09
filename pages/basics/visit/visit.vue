@@ -94,7 +94,7 @@
 
 <script>
 	import {
-		getCity
+		getLocation
 	} from "@/api/location.js"
 
 	import {
@@ -218,7 +218,7 @@
 				wx.showLoading({
 					title: '定位中'
 				});
-				getCity().then(res => {
+				getLocation().then(res => {
 					this.address = res.formatted_addresses.recommend;
 					wx.hideLoading()
 				})

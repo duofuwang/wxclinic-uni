@@ -5,7 +5,7 @@
  */
 import QQMapWX from "@/libs/qqmap-wx-jssdk.min.js";
 
-export function getCity() {
+export function getLocation() {
   return new Promise((resolve, reject) => {
     // 获取授权信息
     uni.getSetting({
