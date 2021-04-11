@@ -43,7 +43,7 @@
 		<view class="margin padding bg-white radius-xl">
 			<view class="grid col-1">
 				<view class="flex align-center justify-center sos-container">
-					<view class="flex round bg-gradual-blue shadow-blur align-center justify-center">
+					<view class="flex round bg-gradual-blue shadow-blur align-center justify-center" @click="emergencyCall">
 						<view class="container align-center justify-center">
 							<view class="circle bg-gradual-blue"></view>
 							<view class="circle bg-gradual-blue"></view>
@@ -58,9 +58,9 @@
 				</view>
 
 				<view class="flex justify-center align-center text-xl" style="width: 90%;">
-					<text class="cuIcon-locationfill text-green-new">
+					<text class="cuIcon-locationfill text-green-new text-center">
 						<text class="text-bold text-black">
-							{{ location }}
+							{{ location.address }}
 						</text>
 					</text>
 				</view>
@@ -150,6 +150,7 @@
 			</navigator>
 		</view>
 		
+		
 		<view class="padding-tb">
 			<u-divider bg-color="#F8FBFF" fontSize="30">呵护生命 绿色健康</u-divider>
 		</view>
@@ -160,18 +161,31 @@
 	import {
 		getLocation
 	} from "@/api/location.js"
+	
+	import {
+		saveEmergency
+	} from "@/api/modules/emergency.js"
 
 	export default {
 		data() {
 			return {
-				location: '福建省厦门市集美区'
+				location: {
+					address: '获取定位中...'
+				},
+				message: "我遇到了紧急情况，当前位置在",
+				emergency: {},
+				userInfo: {},
+				modalName: ""
 			}
 		},
 
 		onLoad() {
 			console.log("emergency onload")
+			
+			this.userInfo = uni.getStorageSync("userInfo");
+			
 			// 获取定位
-			// this.getLocation()
+			this.getLocation()
 		},
 
 		methods: {
@@ -180,9 +194,51 @@
 					title: '定位中'
 				});
 				getLocation().then(res => {
-					console.log(res)
-					this.location = res.address
+					console.log("location", res)
+					this.location = res
 					wx.hideLoading()
+				}).catch(err => {
+					wx.hideLoading()
+					wx.showToast({
+					  title: '请打开授权',
+					  icon: 'error'
+					})
+				})
+			},
+			
+			emergencyCall() {
+				
+				console.log("呼救...")
+				console.log(this.message + "【" + this.location + "】附近")
+				this.emergency.userId = this.userInfo.id;
+				this.emergency.location = this.location.address;
+				this.emergency.latitude = this.location.location.lat;
+				this.emergency.longitude = this.location.location.lng;
+				this.emergency.message = this.message + "【" + this.location.address + "】附近";
+				console.log("emergency", this.emergency)
+				
+				wx.showLoading({
+					title: '发送呼救信息中...'
+				});
+				
+				saveEmergency(this.emergency).then(res => {
+					console.log(res)
+					wx.showToast({
+					  title: '发送成功',
+					  icon: 'success'
+					})
+					
+					setTimeout(() => {
+						uni.navigateTo({
+							url: "/pages/basics/emergency/success"
+						})
+					}, 1000)
+				}).catch(err => {
+					console.log("save emergency error", err)
+					wx.showToast({
+					  title: '发送失败',
+					  icon: 'error'
+					})
 				})
 			}
 		}
