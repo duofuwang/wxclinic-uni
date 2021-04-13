@@ -43,7 +43,8 @@
 		<view class="margin padding bg-white radius-xl">
 			<view class="grid col-1">
 				<view class="flex align-center justify-center sos-container">
-					<view class="flex round bg-gradual-blue shadow-blur align-center justify-center" @click="emergencyCall">
+					<view class="flex round bg-gradual-blue shadow-blur align-center justify-center"
+						@click="emergencyCall">
 						<view class="container align-center justify-center">
 							<view class="circle bg-gradual-blue"></view>
 							<view class="circle bg-gradual-blue"></view>
@@ -52,7 +53,9 @@
 							<view class="circle bg-gradual-blue"></view>
 						</view>
 						<view class="u-absolute">
-							<text class="text-xxl">SOS</text>
+							<text class="text-xxl">
+								{{ isCalling ? "呼救中..." : "SOS"}}
+							</text>
 						</view>
 					</view>
 				</view>
@@ -66,7 +69,7 @@
 				</view>
 			</view>
 		</view>
-		
+
 		<view class="padding-lr-sm padding-bottom-sm margin-top">
 			<view class="text-xl text-bold margin-left-sm padding-top-sm"><text>快速拨打</text></view>
 		</view>
@@ -89,7 +92,7 @@
 					</view>
 				</view>
 			</navigator>
-		
+
 			<navigator hover-class="none" url="/pages/basics/visit/visit">
 				<view class="flex flex-wrap bg-white margin-right-sm padding"
 					style="border-radius: 15rpx; width: 350rpx;">
@@ -109,7 +112,7 @@
 				</view>
 			</navigator>
 		</view>
-		
+
 		<view class="flex flex-wrap justify-between margin-top-sm">
 			<navigator hover-class="none" url="/pages/basics/appointment/appointment">
 				<view class="flex flex-wrap bg-white margin-left-sm padding"
@@ -129,7 +132,7 @@
 					</view>
 				</view>
 			</navigator>
-		
+
 			<navigator hover-class="none" url="/pages/basics/visit/visit">
 				<view class="flex flex-wrap bg-white margin-right-sm padding"
 					style="border-radius: 15rpx; width: 350rpx;">
@@ -149,8 +152,8 @@
 				</view>
 			</navigator>
 		</view>
-		
-		
+
+
 		<view class="padding-tb">
 			<u-divider bg-color="#F8FBFF" fontSize="30">呵护生命 绿色健康</u-divider>
 		</view>
@@ -161,9 +164,11 @@
 	import {
 		getLocation
 	} from "@/api/location.js"
-	
+
 	import {
-		saveEmergency
+		saveEmergency,
+		getCurrentCall,
+		stopEmergencyCall
 	} from "@/api/modules/emergency.js"
 
 	export default {
@@ -175,23 +180,31 @@
 				message: "我遇到了紧急情况，当前位置在",
 				emergency: {},
 				userInfo: {},
-				modalName: ""
+				modalName: "",
+
+				isCalling: false
 			}
 		},
 
 		onLoad() {
 			console.log("emergency onload")
-			
+
 			this.userInfo = uni.getStorageSync("userInfo");
-			
+
 			// 获取定位
 			this.getLocation()
+		},
+
+		onShow() {
+			console.log("emergency page show")
+			this.getCurrentCall();
 		},
 
 		methods: {
 			getLocation() {
 				wx.showLoading({
-					title: '定位中'
+					title: '定位中',
+					mask: true
 				});
 				getLocation().then(res => {
 					console.log("location", res)
@@ -200,14 +213,32 @@
 				}).catch(err => {
 					wx.hideLoading()
 					wx.showToast({
-					  title: '请打开授权',
-					  icon: 'error'
+						title: '请打开授权',
+						icon: 'error'
 					})
 				})
 			},
-			
+
+			// 点击 SOS 球
 			emergencyCall() {
-				
+				// 当前正在呼救
+				if (this.isCalling) {
+					wx.showModal({
+						title: '提示',
+						content: '要停止呼救吗？',
+						confirmText: '停止',
+						success: res => {
+							if (res.confirm) {
+								this.stopEmergencyCall()
+							} else if (res.cancel) {
+								console.log('用户点击取消')
+							}
+						}
+					})
+					return
+				}
+
+				// 当前未发出呼救
 				console.log("呼救...")
 				console.log(this.message + "【" + this.location + "】附近")
 				this.emergency.userId = this.userInfo.id;
@@ -216,30 +247,69 @@
 				this.emergency.longitude = this.location.location.lng;
 				this.emergency.message = this.message + "【" + this.location.address + "】附近";
 				console.log("emergency", this.emergency)
-				
+
 				wx.showLoading({
 					title: '发送呼救信息中...'
 				});
-				
+
 				saveEmergency(this.emergency).then(res => {
 					console.log(res)
-					wx.showToast({
-					  title: '发送成功',
-					  icon: 'success'
-					})
-					
-					setTimeout(() => {
-						uni.navigateTo({
-							url: "/pages/basics/emergency/success"
+					if (res.success) {
+						wx.showToast({
+							title: '发送成功',
+							icon: 'success'
 						})
-					}, 1000)
+
+						this.emergency = res.data;
+
+						setTimeout(() => {
+							uni.navigateTo({
+								url: "/pages/basics/emergency/success?emergency=" +
+									encodeURIComponent(JSON.stringify(this.emergency))
+							})
+						}, 1000)
+					}
+
 				}).catch(err => {
 					console.log("save emergency error", err)
 					wx.showToast({
-					  title: '发送失败',
-					  icon: 'error'
+						title: '发送失败',
+						icon: 'error'
 					})
 				})
+			},
+
+			getCurrentCall() {
+				getCurrentCall({
+					userId: this.userInfo.id
+				}).then(res => {
+					if (res.success) {
+						if (res.data != null) {
+							this.isCalling = res.data.isCalling == 1;
+							this.emergency = res.data
+						} else {
+							this.isCalling = false;
+							this.emergency = {}
+						}
+					}
+				}).catch(err => {
+					console.log(err)
+				})
+			},
+
+			stopEmergencyCall() {
+				console.log("停止紧急呼救")
+				stopEmergencyCall({
+					userId: this.userInfo.id
+				}).then(res => {
+					if (res.success) {
+						this.getCurrentCall()
+					}
+				}).catch(err => {
+					console.log(err);
+					
+				})
+				
 			}
 		}
 	}

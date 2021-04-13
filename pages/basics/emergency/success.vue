@@ -26,7 +26,7 @@
 				<view class="margin"><text>快速描述紧急情况：</text></view>
 				<view class="flex flex-wrap margin">
 					<view class="flex" v-for="(item, index) in quickAddBtnData" :key="index">
-						<button class="cu-btn line-green-new margin-right-sm margin-bottom-sm"
+						<button class="cu-btn lg line-green-new margin-right-sm margin-bottom-sm"
 							@click="quickAdd(quickAddBtnData[index].content)">{{quickAddBtnData[index].title}}</button>
 					</view>
 				</view>
@@ -46,65 +46,94 @@
 </template>
 
 <script>
+	import {
+		saveEmergency
+	} from "@/api/modules/emergency.js"
+	
 	export default {
 		data() {
 			return {
+				emergency: {},
+				remark: "",
+				
 				textareaPlaceholder: "简要描述你所处的紧急情况，以便医生快速确定应对措施，我们会尽快处理您的请求",
 				textareaValue: '',
 				//快速添加按钮
 				quickAddBtnData: [{
 					title: "溺水事故",
-					content: "有发热症状"
+					content: "溺水事故"
 				}, {
 					title: "中暑",
-					content: "其他："
+					content: "中暑"
 				}, {
 					title: "触电",
-					content: "其他："
+					content: "触电"
 				}, {
 					title: "动物咬伤",
-					content: "其他："
+					content: "动物咬伤"
 				}, {
 					title: "食物中毒",
-					content: "受到外伤"
+					content: "食物中毒"
 				}, {
 					title: "脱臼",
-					content: "受到外伤"
+					content: "脱臼"
 				}, {
 					title: "烧伤",
-					content: "其他："
+					content: "烧伤"
 				}, {
 					title: "呕血",
-					content: "其他："
+					content: "呕血"
 				}, {
 					title: "孕妇生产",
-					content: "有头晕症状"
+					content: "孕妇生产"
 				}, {
 					title: "心脏疾病",
-					content: "有感冒症状"
+					content: "心脏疾病"
 				}, {
 					title: "意识昏迷",
-					content: "其他："
+					content: "意识昏迷"
 				}, {
 					title: "严重过敏",
-					content: "其他："
+					content: "严重过敏"
 				}, {
 					title: "哮喘发作",
-					content: "其他："
+					content: "哮喘发作"
 				}, {
 					title: "吃东西噎住",
-					content: "其他："
+					content: "吃东西噎住"
 				},]
 			}
 		},
+		
+		onLoad(option) {
+			this.emergency = JSON.parse(decodeURIComponent(option.emergency));
+			console.log(this.emergency)
+		},
+		
 		methods: {
+			textareaInput(e) {
+				this.textareaValue = e.detail.value
+			},
+			
 			// 向病情描述输入框快速添加内容
 			quickAdd(content) {
 				this.textareaValue.length == 0 ? this.textareaValue += content : this.textareaValue += "\r\n" + content
 			},
 			
+			// 提交
 			submit() {
-				console.log("完成")
+				this.emergency.remark = this.textareaValue;
+				console.log("呼救信息：", this.emergency)
+				
+				saveEmergency(this.emergency).then(res => {
+					if (res.success) {
+						console.log(res.data)
+						uni.navigateBack();
+						
+					}
+				}).catch(err => {
+					console.log(err)
+				})
 			}
 
 		}
