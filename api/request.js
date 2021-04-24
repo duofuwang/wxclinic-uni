@@ -21,6 +21,13 @@ export function postRequest(url, data) {
 				//res.data.data也根据自己的后台返回层级决定，
 				//有的可能是res.data.data.data等其他形式。
 				//返回什么就相应的做调整
+				if(res.statusCode == 401 || res.statusCode == 403) {
+					uni.navigateTo({
+						url: "/pages/login/home"
+					})
+					resolve(res.data);
+					resolve(res.data);
+				}
 				if (res.statusCode == 200 && res.data.code == 0) {
 					resolve(res.data);
 				} else {
@@ -53,6 +60,13 @@ export function getRequest(url, data) {
 				'content-type': 'application/json'
 			},
 			success: function(res) {
+				if(res.statusCode == 401 || res.statusCode == 403) {
+					uni.navigateTo({
+						url: "/pages/login/home"
+					})
+					resolve(res.data);
+					resolve(res.data.data);
+				}
 				if (res.statusCode == 200 && res.data.code == 0) {
 					resolve(res.data.data);
 				} else {
@@ -81,6 +95,12 @@ export function deleteRequest(url, data) {
 				'token': uni.getStorageSync("token")
 			},
 			success: function(res) {
+				if(res.statusCode == 401 || res.statusCode == 403) {
+					uni.navigateTo({
+						url: "/pages/login/home"
+					})
+					resolve(res.data);
+				}
 				if (res.statusCode == 200 && res.data.code == 0) {
 					resolve(res.data);
 				} else {
@@ -109,6 +129,12 @@ export function postJsonRequest(url, data) {
 				'token': uni.getStorageSync("token")
 			},
 			success: function(res) {
+				if(res.statusCode == 401 || res.statusCode == 403) {
+					uni.navigateTo({
+						url: "/pages/login/home"
+					})
+					resolve(res.data);
+				}
 				if (res.statusCode == 200 && res.data.code == 0) {
 					resolve(res.data);
 				} else {
@@ -137,6 +163,12 @@ export function uploadRequest(url, data) {
 				'token': uni.getStorageSync("token")
 			},
 			success: function(res) {
+				if(res.statusCode == 401 || res.statusCode == 403) {
+					uni.navigateTo({
+						url: "/pages/login/home"
+					})
+					resolve(res.data);
+				}
 				if (res.statusCode == 200 && res.data.code == 0) {
 					resolve(res.data);
 				} else {
