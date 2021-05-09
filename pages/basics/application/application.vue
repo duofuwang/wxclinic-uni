@@ -28,8 +28,8 @@
 							<view class="order" v-for="(item, index) in applicationList" :key="index">
 								<view class="top text-xl">
 									<view class="left">
-										<view class="store" v-if="item.type=='appointment'">预约申请</view>
-										<view class="store" v-if="item.type=='visit'">出诊申请</view>
+										<view class="store" v-if="item.type==1">预约申请</view>
+										<view class="store" v-if="item.type==2">出诊申请</view>
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
@@ -46,7 +46,7 @@
 										</view>
 									</view>
 								</view>
-								<view class="item text-xl" v-if="item.type=='visit'">
+								<view class="item text-xl" v-if="item.type==2">
 									<view class="content">
 										<view class="title u-line-2">
 											<text class="text-bold">位置：</text>
@@ -81,8 +81,8 @@
 								v-if="item.status!=0&&item.status!=1&&item.status!=-1">
 								<view class="top text-xl">
 									<view class="left">
-										<view class="store" v-if="item.type=='appointment'">预约申请</view>
-										<view class="store" v-if="item.type=='visit'">出诊申请</view>
+										<view class="store" v-if="item.type==1">预约申请</view>
+										<view class="store" v-if="item.type==2">出诊申请</view>
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
@@ -99,7 +99,7 @@
 										</view>
 									</view>
 								</view>
-								<view class="item text-xl" v-if="item.type=='visit'">
+								<view class="item text-xl" v-if="item.type==2">
 									<view class="content">
 										<view class="title u-line-2">
 											<text class="text-bold">位置：</text>
@@ -134,8 +134,8 @@
 								v-if="item.status==1">
 								<view class="top text-xl">
 									<view class="left">
-										<view class="store" v-if="item.type=='appointment'">预约申请</view>
-										<view class="store" v-if="item.type=='visit'">出诊申请</view>
+										<view class="store" v-if="item.type==1">预约申请</view>
+										<view class="store" v-if="item.type==2">出诊申请</view>
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
@@ -152,7 +152,7 @@
 										</view>
 									</view>
 								</view>
-								<view class="item text-xl" v-if="item.type=='visit'">
+								<view class="item text-xl" v-if="item.type==2">
 									<view class="content">
 										<view class="title u-line-2">
 											<text class="text-bold">位置：</text>
@@ -187,8 +187,8 @@
 								v-if="item.status==0">
 								<view class="top text-xl">
 									<view class="left">
-										<view class="store" v-if="item.type=='appointment'">预约申请</view>
-										<view class="store" v-if="item.type=='visit'">出诊申请</view>
+										<view class="store" v-if="item.type==1">预约申请</view>
+										<view class="store" v-if="item.type==2">出诊申请</view>
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
@@ -205,7 +205,7 @@
 										</view>
 									</view>
 								</view>
-								<view class="item text-xl" v-if="item.type=='visit'">
+								<view class="item text-xl" v-if="item.type==2">
 									<view class="content">
 										<view class="title u-line-2">
 											<text class="text-bold">位置：</text>

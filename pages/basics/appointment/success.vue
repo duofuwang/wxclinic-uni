@@ -14,7 +14,7 @@
 		<view class="solid-top text-lg" style="width: 90%; margin: 0 auto;">
 			<view class="flex justify-start">
 				<view class="title text-grey-grey padding-sm margin-xs">预约人</view>
-				<view class="padding-sm margin-xs radius">{{appointment.nickName}}</view>
+				<view class="padding-sm margin-xs radius">{{appointment.nickname}}</view>
 			</view>
 			<view class="flex justify-start">
 				<view class="title text-grey-grey padding-sm margin-xs">手机号码</view>

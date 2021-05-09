@@ -2,7 +2,7 @@
 	<view>
 		<cu-custom bgColor="bg-green-new" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">{{contact.nickName}}</block>
+			<block slot="content">{{contact.nickname}}</block>
 		</cu-custom>
 		<view class="cu-chat" id="chatBox">
 			<view class="cu-item" :class="messageList[index].fromId==userInfo.id?'self':''"

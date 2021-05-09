@@ -9,7 +9,7 @@
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<view class="cu-form-group margin-top">
 					<view class="title text-bold">预约人</view>
-					<input :value="userInfo==null?'':userInfo.nickName" placeholder="昵称" disabled name="nickName"></input>
+					<input :value="userInfo==null?'':userInfo.nickname" placeholder="昵称" disabled name="nickname"></input>
 				</view>
 				<view class="cu-form-group">
 					<view class="title text-bold">手机号码</view>
@@ -201,7 +201,7 @@
 				var appointment = e.detail.value;
 				appointment.userId = this.userInfo.id;
 				appointment.time = appointment.date + " " + appointment.time;
-				appointment.type = 'appointment'
+				appointment.type = 1
 				
 				// 提交前将换行符替换为<br/>，才能保存到数据库
 				appointment.description = appointment.description.replace(/\n|\r\n/g,"<br/>");

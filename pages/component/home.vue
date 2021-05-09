@@ -54,7 +54,7 @@
 					<view class="cu-item-no-border-bottom">
 						<view class="cu-avatar lg bg-white" style="background-image:url(https://s3.ax1x.com/2021/03/07/6uLvgU.png);"></view>
 						<view class="content">
-							<view class="text-grey">{{contact.nickName}}</view>
+							<view class="text-grey">{{contact.nickname}}</view>
 							<view class="text-gray text-sm flex">
 								<view class="text-cut" v-if="contact.type == 'text'">
 									{{ contact == null ? '' : contact.content}}

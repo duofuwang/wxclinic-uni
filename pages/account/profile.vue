@@ -9,7 +9,7 @@
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<view class="cu-form-group">
 					<view class="title text-bold">昵称</view>
-					<input :value="userInfo==null?'':userInfo.nickName" placeholder="请填写昵称" name="nickName"></input>
+					<input :value="userInfo==null?'':userInfo.nickname" placeholder="请填写昵称" name="nickname"></input>
 				</view>
 				<view class="cu-form-group arrow" @click="chooseAvatar">
 					<view class="title text-bold">头像</view>

@@ -22,11 +22,11 @@
 								<image class="cu-avatar xl round" :src="user.avatarUrl==null?'../../static/wechat.png':user.avatarUrl"></image>
 							</view>
 							<view class="basis-lg margin-xs radius">
-								<!-- <text class="text-xl">{{ user.nickName }}</text>
-							<text class="text-xl">{{ user.nickName }}</text> -->
+								<!-- <text class="text-xl">{{ user.nickname }}</text>
+							<text class="text-xl">{{ user.nickname }}</text> -->
 								<view class="content padding-left-sm">
 									<view class="text-xxl">
-										<text class="margin-right-xs">{{ user.nickName==null?'未登录':user.nickName }}</text>
+										<text class="margin-right-xs">{{ user.nickname==null?'未登录':user.nickname }}</text>
 									</view>
 									<view class="text-gray text-xl margin-top-sm">
 										<!-- <text class="margin-right-xs">{{ user.phoneNumber }}</text> -->
@@ -387,7 +387,7 @@
 					key: 'userInfo',
 					data: {
 						id: 'ou-2',
-						nickName: 'xx',
+						nickname: 'xx',
 						avatarUrl: 'https://thirdwx.qlogo.cn/mmopen/vi_32/7nULdT9goEs9b1voicSIfpIV8ibibRiclMibbl9Z3q67JUdtI2AUib1FofK7YfcgQQIO5wPGrWSCOD9qmFWJcynU1JLA/132',
 						toId: 'ou-fS5gMqbOGVNGGjPjqmm5Vvs9s'
 					},

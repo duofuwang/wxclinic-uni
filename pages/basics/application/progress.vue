@@ -72,7 +72,7 @@
 					<view class="content text-xl">
 						<view class="margin">
 							<text>
-								{{ user.nickName }}
+								{{ user.nickname }}
 							</text>
 						</view>
 					</view>
@@ -138,8 +138,8 @@
 			<view class="box">
 				<view class="cu-bar btn-group foot bg-white">
 					<button class="cu-btn line-green-new shadow-blur round lg" @click="cancle">返回</button>
-					<button class="cu-btn bg-green-new shadow-blur round lg" v-if="application.type=='appointment'" @click="applyAgain('appointment')">再次申请</button>
-					<button class="cu-btn bg-green-new shadow-blur round lg" v-if="application.type=='visit'" @click="applyAgain('visit')">再次申请</button>
+					<button class="cu-btn bg-green-new shadow-blur round lg" v-if="application.type==1" @click="applyAgain('appointment')">再次申请</button>
+					<button class="cu-btn bg-green-new shadow-blur round lg" v-if="application.type==2" @click="applyAgain('visit')">再次申请</button>
 				</view>
 			</view>
 		</view>

@@ -9,7 +9,7 @@
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<view class="cu-form-group margin-top">
 					<view class="title text-bold">预约人</view>
-					<input :value="userInfo==null?'':userInfo.nickName" placeholder="昵称" disabled name="nickName"></input>
+					<input :value="userInfo==null?'':userInfo.nickname" placeholder="昵称" disabled name="nickname"></input>
 				</view>
 				<view class="cu-form-group">
 					<view class="title text-bold">手机号码</view>
@@ -236,7 +236,7 @@
 				visit.time_hh_mm = visit.time;
 				visit.time = this.date + " " + this.time
 				visit.fee = "1.00";
-				visit.type = 'visit'
+				visit.type = 2
 				// 提交前将换行符替换为<br/>，才能保存到数据库
 				visit.description = visit.description.replace(/\n|\r\n/g,"<br/>");
 				var day = this.picker[visit.day];
