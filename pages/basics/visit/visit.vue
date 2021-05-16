@@ -9,11 +9,13 @@
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<view class="cu-form-group margin-top">
 					<view class="title text-bold">预约人</view>
-					<input :value="userInfo==null?'':userInfo.nickname" placeholder="昵称" disabled name="nickname"></input>
+					<input :value="userInfo==null?'':userInfo.nickname" placeholder="昵称" disabled
+						name="nickname"></input>
 				</view>
 				<view class="cu-form-group">
 					<view class="title text-bold">手机号码</view>
-					<input :value="userInfo==null?'':userInfo.phoneNumber" placeholder="预留手机号" name="phoneNumber"></input>
+					<input :value="userInfo==null?'':userInfo.phoneNumber" placeholder="预留手机号"
+						name="phoneNumber"></input>
 					<text class='cuIcon-phone text-orange'></text>
 				</view>
 				<view class="cu-form-group">
@@ -43,14 +45,15 @@
 				</view>
 
 				<view class="cu-form-group margin-top">
-					<textarea maxlength="-1" :disabled="modalName!=null" :value="textareaAValue" @input="textareaAInput" placeholder="请简要描述病情……"
-					 name="description"></textarea>
+					<textarea maxlength="-1" :disabled="modalName!=null" :value="textareaAValue" @input="textareaAInput"
+						placeholder="请简要描述病情……" name="description"></textarea>
 				</view>
 				<view class="cu-form-group">
 					<text>快速添加：</text>
 					<scroll-view scroll-x="true" class="kite-classify-scroll">
 						<view class="kite-classify-cell" v-for="(item, index) in quickAddBtnData" :key="index">
-							<button class="cu-btn round" @click="quickAdd(quickAddBtnData[index].content)">{{quickAddBtnData[index].title}}</button>
+							<button class="cu-btn round"
+								@click="quickAdd(quickAddBtnData[index].content)">{{quickAddBtnData[index].title}}</button>
 						</view>
 					</scroll-view>
 				</view>
@@ -65,7 +68,8 @@
 				</view>
 				<view class="cu-form-group">
 					<view class="grid col-4 grid-square flex-sub">
-						<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+						<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage"
+							:data-url="imgList[index]">
 							<image :src="imgList[index]" mode="aspectFill"></image>
 							<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
 								<text class='cuIcon-close'></text>
@@ -81,8 +85,8 @@
 			</scroll-view>
 			<view class="box margin-top-xs">
 				<view class="cu-bar btn-group foot bg-white">
-					<view class="text-xxl padding">
-						<text class="text-price text-red">1.00</text>
+					<view class="text-xxl padding text-price text-red">
+						<text class="" v-if="applicationFee != ''">{{ applicationFee }}</text>
 					</view>
 					<button class="cu-btn bg-green-new shadow-blur round lg" form-type="submit">提交</button>
 				</view>
@@ -100,10 +104,14 @@
 	import {
 		saveVisit
 	} from "@/api/modules/visit.js"
-	
+
 	import {
 		apply
 	} from "@/api/modules/application.js"
+
+	import {
+		getConfig
+	} from "@/api/modules/config.js"
 
 	export default {
 		data() {
@@ -117,6 +125,7 @@
 				textareaAValue: '',
 				userInfo: {},
 				address: null,
+				applicationFee: "",
 
 				//快速添加按钮
 				quickAddBtnData: [{
@@ -155,11 +164,15 @@
 					var [error, res] = data;
 					// {"sysTime2":"2021-03-02 14:21:35","sysTime1":"20210302142135"}
 					// res.data.sysTime2 = 2021-03-02 14:21:35
-					this.time = res.data.sysTime2.substring(res.data.sysTime2.lastIndexOf(" ") + 1, res.data.sysTime2.lastIndexOf(":"))
+					this.time = res.data.sysTime2.substring(res.data.sysTime2.lastIndexOf(" ") + 1, res.data.sysTime2
+						.lastIndexOf(":"))
 					this.date = res.data.sysTime2.substring(0, res.data.sysTime2.lastIndexOf(" "))
 
 				})
 			this.userInfo = uni.getStorageSync("userInfo");
+			
+			this.getApplicationFee()
+
 		},
 		methods: {
 			PickerChange(e) {
@@ -213,6 +226,12 @@
 				this.textareaAValue.length == 0 ? this.textareaAValue += content : this.textareaAValue += "\r\n" + content
 			},
 
+			getApplicationFee() {
+				getConfig().then(res => {
+					this.applicationFee = res.data.applicationFee
+				})
+			},
+
 			// 获取定位
 			getLocation() {
 				wx.showLoading({
@@ -235,10 +254,10 @@
 				visit.userId = this.userInfo.id;
 				visit.time_hh_mm = visit.time;
 				visit.time = this.date + " " + this.time
-				visit.fee = "1.00";
+				visit.fee = this.applicationFee;
 				visit.type = 2
 				// 提交前将换行符替换为<br/>，才能保存到数据库
-				visit.description = visit.description.replace(/\n|\r\n/g,"<br/>");
+				visit.description = visit.description.replace(/\n|\r\n/g, "<br/>");
 				var day = this.picker[visit.day];
 				console.log(visit)
 				if (this.checkForm(visit)) {

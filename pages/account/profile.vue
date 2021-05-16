@@ -41,10 +41,10 @@
 						<radio-group @change="genderRadioChange" name="gender">
 							<text class="text-lg">男</text>
 							<radio class='blue radio margin-left-sm' :class="userInfo.gender==1?'checked':''"
-								:checked="userInfo.gender==1?true:false" value=1></radio>
+								:checked="userInfo.gender==1" value=1></radio>
 							<text class="text-lg margin-left-sm">女</text>
-							<radio class='blue radio margin-left-sm' :class="userInfo.gender==0?'checked':''"
-								:checked="userInfo.gender==0?true:false" value=0></radio>
+							<radio class='blue radio margin-left-sm' :class="userInfo.gender==2?'checked':''"
+								:checked="userInfo.gender==2" value=2></radio>
 						</radio-group>
 					</view>
 				</view>
@@ -197,11 +197,6 @@
 			
 			// 提交表单
 			formSubmit(e) {
-				wx.showToast({
-					title: '保存中',
-					icon: 'loading',
-					duration: 1000
-				})
 				
 				let form = e.detail.value;
 				
@@ -223,7 +218,7 @@
 				saveUser(data).then(res => {
 					console.log(res)
 					if (res.success) {
-						wx.showToast({
+						uni.showToast({
 							title: '保存成功',
 							icon: 'success',
 							duration: 1000
@@ -235,11 +230,11 @@
 					
 				}).catch(data => {
 					console.log(data)
-					wx.showToast({
-						title: '保存失败',
-						icon: 'error',
-						duration: 1000
-					})
+					// wx.showToast({
+					// 	title: '保存失败',
+					// 	icon: 'error',
+					// 	duration: 1000
+					// })
 				})
 			},
 			

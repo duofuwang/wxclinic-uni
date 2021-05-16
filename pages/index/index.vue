@@ -63,6 +63,9 @@
 	import {
 		getUserInfo
 	} from '../../api/modules/user.js'
+	import {
+		getConfig
+	} from "@/api/modules/config.js"
 
 	export default {
 		data() {
@@ -113,6 +116,8 @@
 
 			// 更新account组件
 			this.updateAccountComponent()
+			
+			this.getConfig()
 
 			// 进入其他页面时，uni.onSocketMessage会被覆盖
 			// 所以返回页面时重新启动消息监听
@@ -211,6 +216,15 @@
 			updateAccountComponent() {
 				uni.$emit('update', {
 					msg: '更新account'
+				})
+			},
+
+			// 获取诊所配置
+			getConfig() {
+				getConfig().then(res => {
+					if(res.success) {
+						uni.setStorageSync("config", res.data)
+					}
 				})
 			}
 		}

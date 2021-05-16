@@ -10,22 +10,26 @@
 				</view>
 			</view>
 			<view class="flex flex-wrap justify-between">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/input.png" mode="widthFix" class="view-image"></image>
+				<navigator hover-class="none" url="/pages/component/message/message">
+					<view class="flex flex-wrap bg-white margin-left-sm padding"
+						style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+						<view class="basis-xs radius">
+							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+								<image src="/static/icon/input.png" mode="widthFix" class="view-image"></image>
+							</view>
+						</view>
+						<view class="content padding-left-sm">
+							<view class="text-xl text-bold">
+								<text>快速留言</text>
+							</view>
+							<view class="text-gray">
+								<view>捎句话给医生</view>
+							</view>
 						</view>
 					</view>
-					<view class="content padding-left-sm">
-						<view class="text-xl text-bold">
-							<text>快速留言</text>
-						</view>
-						<view class="text-gray">
-							<view>捎句话给医生</view>
-						</view>
-					</view>
-				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
+				</navigator>
+				<view class="flex flex-wrap bg-white margin-right-sm padding"
+					style="border-radius: 15rpx; width: 350rpx;" @click="makePhoneCall">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/phone.png" mode="widthFix" class="view-image"></image>
@@ -47,12 +51,14 @@
 					<text>我的医生</text>
 				</view>
 			</view>
-			
+
 			<!-- 消息列表 -->
 			<view class="padding-sm radius menu">
-				<view class="cu-list menu-avatar" style="border-radius: 15rpx;" v-for="(contact, index) in contactList" :key="index" @click="goChat(contact)">
+				<view class="cu-list menu-avatar" style="border-radius: 15rpx;" v-for="(contact, index) in contactList"
+					:key="index" @click="goChat(contact)">
 					<view class="cu-item-no-border-bottom">
-						<view class="cu-avatar lg bg-white" style="background-image:url(https://s3.ax1x.com/2021/03/07/6uLvgU.png);"></view>
+						<view class="cu-avatar lg bg-white"
+							style="background-image:url(https://s3.ax1x.com/2021/03/07/6uLvgU.png);"></view>
 						<view class="content">
 							<view class="text-grey">{{contact.nickname}}</view>
 							<view class="text-gray text-sm flex">
@@ -72,7 +78,8 @@
 						</view>
 						<view class="action">
 							<view class="text-grey text-xs">{{$u.timeFormat(contact.createTime, 'hh:MM')}}</view>
-							<view class="cu-tag round bg-red sm" v-if="contact.unreadNum!=0">{{contact.unreadNum}}</view>
+							<view class="cu-tag round bg-red sm" v-if="contact.unreadNum!=0">{{contact.unreadNum}}
+							</view>
 						</view>
 					</view>
 				</view>
@@ -99,7 +106,7 @@
 	from '@/api/modules/message.js'
 
 	export default {
-		props: ['unreadMsgList', 'unreadNum','contactList'],
+		props: ['unreadMsgList', 'unreadNum', 'contactList'],
 		data() {
 			return {
 
@@ -108,8 +115,7 @@
 		computed: {
 			...mapState(['lastMsg'])
 		},
-		mounted() {
-		},
+		mounted() {},
 		methods: {
 			goChat(contact) {
 				this.$emit("signMsg")
@@ -125,19 +131,25 @@
 				var msg = uni.getStorageSync("lastMsg");
 				return msg
 			},
-			
+
 			// 获取最近会话列表和最后一条聊天记录
 			getContactList() {
 				getContactList({
 					userId: uni.getStorageSync("userInfo").id
 				}).then(res => {
 					console.log("getContactList res: ", res)
-				}).catch(data =>{
+				}).catch(data => {
 					console.log("getContactList error: ", data)
 				})
-			}
-			
-			
+			},
+
+			makePhoneCall() {
+				wx.makePhoneCall({
+					phoneNumber: uni.getStorageSync("config").tel
+				}).catch(err => {})
+			},
+
+
 		}
 	}
 </script>

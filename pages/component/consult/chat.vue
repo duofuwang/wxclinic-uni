@@ -465,10 +465,8 @@
 					sizeType: ['original', 'compressed'], //可以指定是原图还是压缩图，默认二者都有
 					sourceType: ['album'], //从相册选择
 					success: function(res) {
-						console.log("chooseImage success: ", res);
 						const tempFilePaths = res.tempFilePaths;
 						tempFilePaths.forEach(item => {
-							console.log("upload image: ", item)
 							uni.uploadFile({
 								url: that.$api.upload, //仅为示例，非真实的接口地址
 								filePath: item,
@@ -480,10 +478,12 @@
 									'userId': uni.getStorageSync("userInfo").id
 								},
 								success: (res) => {
-									console.log("uploadFile success: ", JSON.parse(res
-										.data));
+									var result = JSON.parse(res.data)
 									// 文件上传成功则发送消息
-									that.sendImage(JSON.parse(res.data).data)
+									if (result.success) {
+										that.sendImage(result.data)
+									}
+
 								}
 							});
 						})

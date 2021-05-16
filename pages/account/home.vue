@@ -19,18 +19,21 @@
 						<view class="flex flex-wrap" @click="login">
 							<view class="basis-xs margin-xs radius">
 								<!-- <cmd-avatar shape="circle" size="lg" :src="user.avatarUrl"></cmd-avatar> -->
-								<image class="cu-avatar xl round" :src="user.avatarUrl==null?'../../static/wechat.png':user.avatarUrl"></image>
+								<image class="cu-avatar xl round"
+									:src="user.avatarUrl==null?'../../static/wechat.png':user.avatarUrl"></image>
 							</view>
 							<view class="basis-lg margin-xs radius">
 								<!-- <text class="text-xl">{{ user.nickname }}</text>
 							<text class="text-xl">{{ user.nickname }}</text> -->
 								<view class="content padding-left-sm">
 									<view class="text-xxl">
-										<text class="margin-right-xs">{{ user.nickname==null?'未登录':user.nickname }}</text>
+										<text
+											class="margin-right-xs">{{ user.nickname==null?'未登录':user.nickname }}</text>
 									</view>
 									<view class="text-gray text-xl margin-top-sm">
 										<!-- <text class="margin-right-xs">{{ user.phoneNumber }}</text> -->
-										<view class="cu-tag line-gray round">{{ user.phoneNumber==null?'点击去授权登录~':user.phoneNumber }}</view>
+										<view class="cu-tag line-gray round">
+											{{ user.phoneNumber==null?'点击去授权登录~':user.phoneNumber }}</view>
 									</view>
 								</view>
 							</view>
@@ -42,7 +45,8 @@
 						<text>身体健康 生活愉快</text>
 					</view>
 					<view style="float: right;">
-						<view><button class="cu-btn bg-green-new round shadow-blur" @click="editProfile">修改资料</button></view>
+						<view><button class="cu-btn bg-green-new round shadow-blur" @click="editProfile">修改资料</button>
+						</view>
 					</view>
 				</view>
 			</view>
@@ -55,7 +59,8 @@
 			</view>
 		</view> -->
 			<view class="flex flex-wrap justify-between margin-top">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-left-sm padding"
+					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/pill.png" mode="widthFix" class="view-image"></image>
@@ -70,7 +75,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-right-sm padding"
+					style="border-radius: 15rpx; width: 350rpx;">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/bill.png" mode="widthFix" class="view-image"></image>
@@ -90,21 +96,20 @@
 			<view class="cu-list menu sm-border card-menu-sm margin-top">
 				<view class="cu-item arrow">
 					<view class="content">
-						<!-- <text class="cuIcon-profile text-cyan"></text> -->
-						<image src="/static/icon/profile.png" class="png" mode="aspectFit"></image>
-						<text class="text-grey">我的资料</text>
+						<navigator class="content" hover-class="none" url="/pages/account/profile">
+							<image src="/static/icon/profile.png" class="png" mode="aspectFit"></image>
+							<text class="text-grey">我的资料</text>
+						</navigator>
 					</view>
 				</view>
 				<view class="cu-item arrow">
-					<button class="cu-btn content" open-type="contact">
-						<!-- <text class="cuIcon-mail text-olive"></text> -->
+					<button class="cu-btn content" @click="goEvaluate">
 						<image src="/static/icon/message.png" class="png" mode="aspectFit"></image>
 						<text class="text-grey">服务评价</text>
 					</button>
 				</view>
 				<view class="cu-item arrow">
-					<navigator class="content" hover-class="none" url="../list/list" open-type="redirect">
-						<!-- <text class="cuIcon-discover text-orange"></text> -->
+					<navigator class="content" hover-class="none" url="/pages/account/about">
 						<image src="/static/icon/leaf.png" class="png" mode="aspectFit"></image>
 						<text class="text-grey">关于我们</text>
 					</navigator>
@@ -121,7 +126,8 @@
 
 			<view class="margin-top margin-bottom-xxl">
 				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="test">建立WebSocket连接1</button>
+					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
+						@click="test">建立WebSocket连接1</button>
 				</view>
 			</view>
 
@@ -133,7 +139,8 @@
 
 			<view class="margin-top margin-bottom-xl">
 				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="test2">建立WebSocket连接2</button>
+					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
+						@click="test2">建立WebSocket连接2</button>
 				</view>
 			</view>
 
@@ -154,16 +161,18 @@
 					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="close2">关闭连接2</button>
 				</view>
 			</view>
-			
+
 			<view class="margin-top margin-bottom-xl">
 				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="setStorage()">setStorage</button>
+					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
+						@click="setStorage()">setStorage</button>
 				</view>
 			</view>
 
 			<view class="margin-top margin-bottom-xl">
 				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="getAllUser()">获取用户信息</button>
+					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
+						@click="getAllUser()">获取用户信息</button>
 				</view>
 			</view>
 
@@ -193,8 +202,7 @@
 
 	export default {
 		name: "account",
-		props: {
-		},
+		props: {},
 		data() {
 			return {
 				user: {},
@@ -208,7 +216,7 @@
 		},
 		mounted() {
 			this.user = uni.getStorageSync("userInfo")
-			
+
 			// 监听更新事件
 			this.onUpdate();
 		},
@@ -236,18 +244,24 @@
 					});
 				}, 1000)
 			},
-			
+
 			// 修改资料
 			editProfile() {
 				uni.navigateTo({
 					url: '/pages/account/profile'
 				})
 			},
-			
+
 			// 更新内容
 			onUpdate() {
 				uni.$on('update', data => {
 					this.user = uni.getStorageSync("userInfo")
+				})
+			},
+
+			goEvaluate() {
+				uni.navigateTo({
+					url: '/pages/account/evaluate'
 				})
 			},
 
@@ -381,7 +395,7 @@
 					console.log('2--WebSocket 已关闭！');
 				});
 			},
-			
+
 			setStorage() {
 				uni.setStorage({
 					key: 'userInfo',

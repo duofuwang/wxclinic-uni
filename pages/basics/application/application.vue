@@ -33,8 +33,8 @@
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
-										<view class="text-red" v-else-if="item.status==0">拒绝</view>
-										<view class="text-grey" v-else-if="item.status==-1">已撤销</view>
+										<view class="text-red" v-else-if="item.status==2">拒绝</view>
+										<view class="text-grey" v-else-if="item.status==3">已撤销</view>
 										<view class="text-orange" v-else>审核中</view>
 									</view>
 								</view>
@@ -65,7 +65,7 @@
 								<view class="bottom">
 									<view class="logistics btn" @click="deleApplication(item.id)">删除</view>
 									<view class="logistics btn" style="float: left;" @click="revokeApplication(item.id)"
-										v-if="item.status!=0&&item.status!=1&&item.status!=-1">撤销</view>
+										v-if="item.status==0">撤销</view>
 									<view class="evaluate btn" @click="viewProgress(item)">查看</view>
 								</view>
 							</view>
@@ -78,7 +78,7 @@
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
 							<view class="order" v-for="(item, index) in applicationList" :key="index"
-								v-if="item.status!=0&&item.status!=1&&item.status!=-1">
+								v-if="item.status==0">
 								<view class="top text-xl">
 									<view class="left">
 										<view class="store" v-if="item.type==1">预约申请</view>
@@ -86,8 +86,8 @@
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
-										<view class="text-red" v-else-if="item.status==0">拒绝</view>
-										<view class="text-grey" v-else-if="item.status==-1">已撤销</view>
+										<view class="text-red" v-else-if="item.status==2">拒绝</view>
+										<view class="text-grey" v-else-if="item.status==3">已撤销</view>
 										<view class="text-orange" v-else>审核中</view>
 									</view>
 								</view>
@@ -118,8 +118,8 @@
 								<view class="bottom">
 									<view class="logistics btn" @click="deleApplication(item.id)">删除</view>
 									<view class="logistics btn" style="float: left;" @click="revokeApplication(item.id)"
-										v-if="item.status!=0&&item.status!=1&&item.status!=-1">撤销</view>
-									<view class="evaluate btn">查看</view>
+										v-if="item.status==0">撤销</view>
+									<view class="evaluate btn" @click="viewProgress(item)">查看</view>
 								</view>
 							</view>
 							<u-loadmore :status="loadStatus[0]" bgColor="bg-light-light" class="margin"></u-loadmore>
@@ -139,8 +139,8 @@
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
-										<view class="text-red" v-else-if="item.status==0">拒绝</view>
-										<view class="text-grey" v-else-if="item.status==-1">已撤销</view>
+										<view class="text-red" v-else-if="item.status==2">拒绝</view>
+										<view class="text-grey" v-else-if="item.status==3">已撤销</view>
 										<view class="text-orange" v-else>审核中</view>
 									</view>
 								</view>
@@ -171,8 +171,8 @@
 								<view class="bottom">
 									<view class="logistics btn" @click="deleApplication(item.id)">删除</view>
 									<view class="logistics btn" style="float: left;" @click="revokeApplication(item.id)"
-										v-if="item.status!=0&&item.status!=1&&item.status!=-1">撤销</view>
-									<view class="evaluate btn">查看</view>
+										v-if="item.status==0">撤销</view>
+									<view class="evaluate btn" @click="viewProgress(item)">查看</view>
 								</view>
 							</view>
 							<u-loadmore :status="loadStatus[0]" bgColor="bg-light-light" class="margin"></u-loadmore>
@@ -184,7 +184,7 @@
 					<scroll-view scroll-y style="height: 100%;width: 100%;" @scrolltolower="reachBottom">
 						<view class="page-box">
 							<view class="order" v-for="(item, index) in applicationList" :key="index"
-								v-if="item.status==0">
+								v-if="item.status==2">
 								<view class="top text-xl">
 									<view class="left">
 										<view class="store" v-if="item.type==1">预约申请</view>
@@ -192,8 +192,8 @@
 									</view>
 									<view class="right text-xl">
 										<view class="text-green" v-if="item.status==1">通过</view>
-										<view class="text-red" v-else-if="item.status==0">拒绝</view>
-										<view class="text-grey" v-else-if="item.status==-1">已撤销</view>
+										<view class="text-red" v-else-if="item.status==2">拒绝</view>
+										<view class="text-grey" v-else-if="item.status==3">已撤销</view>
 										<view class="text-orange" v-else>审核中</view>
 									</view>
 								</view>
@@ -224,31 +224,14 @@
 								<view class="bottom">
 									<view class="logistics btn" @click="deleApplication(item.id)">删除</view>
 									<view class="logistics btn" style="float: left;" @click="revokeApplication(item.id)"
-										v-if="item.status!=0&&item.status!=1&&item.status!=-1">撤销</view>
-									<view class="evaluate btn">查看</view>
+										v-if="item.status==0">撤销</view>
+									<view class="evaluate btn" @click="viewProgress(item)">查看</view>
 								</view>
 							</view>
 							<u-loadmore :status="loadStatus[0]" bgColor="bg-light-light" class="margin"></u-loadmore>
 						</view>
 					</scroll-view>
 				</swiper-item>
-				<!-- <swiper-item class="swiper-item">
-					<scroll-view scroll-y style="height: 100%;width: 100%;">
-						<view class="page-box">
-							<view>
-								<view class="centre">
-									<image src="https://cdn.uviewui.com/uview/template/taobao-order.png" mode="">
-									</image>
-									<view class="explain">
-										您还没有相关的订单
-										<view class="tips">可以去看看有那些想买的</view>
-									</view>
-									<view class="btn">随便逛逛</view>
-								</view>
-							</view>
-						</view>
-					</scroll-view>
-				</swiper-item> -->
 			</swiper>
 		</view>
 

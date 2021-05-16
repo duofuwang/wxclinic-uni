@@ -69,22 +69,25 @@
 						</view>
 					</view>
 				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding"
-					style="border-radius: 15rpx; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/record.png" mode="widthFix" class="view-image"></image>
+
+				<navigator hover-class="none" url="/pages/basics/record/record">
+					<view class="flex flex-wrap bg-white margin-right-sm padding"
+						style="border-radius: 15rpx; width: 350rpx;">
+						<view class="basis-xs radius">
+							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+								<image src="/static/icon/record.png" mode="widthFix" class="view-image"></image>
+							</view>
+						</view>
+						<view class="padding-left-sm">
+							<view class="text-xl text-bold">
+								<text class="margin-right-xs">病历查询</text>
+							</view>
+							<view class="text-gray">
+								<view>我的病历查询</view>
+							</view>
 						</view>
 					</view>
-					<view class="padding-left-sm">
-						<view class="text-xl text-bold">
-							<text class="margin-right-xs">病历查询</text>
-						</view>
-						<view class="text-gray">
-							<view>我的病历查询</view>
-						</view>
-					</view>
-				</view>
+				</navigator>
 			</view>
 
 			<view class="flex flex-wrap justify-between margin-top-sm">
@@ -129,22 +132,24 @@
 			</view>
 
 			<view class="flex flex-wrap justify-between">
-				<view class="flex flex-wrap bg-white margin-left-sm padding"
-					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/feedback.png" mode="widthFix" class="view-image"></image>
+				<navigator hover-class="none" url="/pages/basics/suggestion/suggestion">
+					<view class="flex flex-wrap bg-white margin-left-sm padding"
+						style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+						<view class="basis-xs radius">
+							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+								<image src="/static/icon/feedback.png" mode="widthFix" class="view-image"></image>
+							</view>
+						</view>
+						<view class="content padding-left-sm">
+							<view class="text-xl text-bold">
+								<text>意见反馈</text>
+							</view>
+							<view class="text-gray">
+								<view>帮助改进服务</view>
+							</view>
 						</view>
 					</view>
-					<view class="content padding-left-sm">
-						<view class="text-xl text-bold">
-							<text>意见反馈</text>
-						</view>
-						<view class="text-gray">
-							<view>帮助改进服务</view>
-						</view>
-					</view>
-				</view>
+				</navigator>
 			</view>
 
 			<view class="margin-top">

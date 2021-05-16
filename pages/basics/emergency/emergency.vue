@@ -9,18 +9,17 @@
 			<view class="flex flex-wrap">
 				<view class="flex basis-xs radius">
 					<view class="cu-avatar round bg-white" style="height: 120rpx; width: 120rpx;">
-						<image src="https://cube.elemecdn.com/0/88/03b0d39583f48206768a7534e55bcpng.png" mode="widthFix"
-							class="round"></image>
+						<image :src="userInfo.avatarUrl" mode="widthFix" class="round"></image>
 					</view>
 				</view>
 
 				<view class="flex align-center margin-left">
 					<view class="content">
 						<view class="text-xl text-bold">
-							<text>wangduofu</text>
+							<text>{{ userInfo.realName || userInfo.nickname}}</text>
 						</view>
 						<view class="text-gray">
-							<view class='cu-tag round'>1760541026</view>
+							<view class='cu-tag round'>{{ userInfo.phoneNumber }}</view>
 						</view>
 					</view>
 				</view>
@@ -74,83 +73,75 @@
 			<view class="text-xl text-bold margin-left-sm padding-top-sm"><text>快速拨打</text></view>
 		</view>
 		<view class="flex flex-wrap justify-between">
-			<navigator hover-class="none" url="/pages/basics/appointment/appointment">
-				<view class="flex flex-wrap bg-white margin-left-sm padding"
-					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/ring.png" mode="widthFix" class="view-image"></image>
-						</view>
-					</view>
-					<view class="content padding-left-sm">
-						<view class="text-xl text-bold">
-							<text>报警求助</text>
-						</view>
-						<view class="text-gray">
-							<view>110</view>
-						</view>
+			<view class="flex flex-wrap bg-white margin-left-sm padding"
+				style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="makePhoneCall('110')">
+				<view class="basis-xs radius">
+					<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+						<image src="/static/icon/ring.png" mode="widthFix" class="view-image"></image>
 					</view>
 				</view>
-			</navigator>
+				<view class="content padding-left-sm">
+					<view class="text-xl text-bold">
+						<text>报警求助</text>
+					</view>
+					<view class="text-gray">
+						<view>110</view>
+					</view>
+				</view>
+			</view>
 
-			<navigator hover-class="none" url="/pages/basics/visit/visit">
-				<view class="flex flex-wrap bg-white margin-right-sm padding"
-					style="border-radius: 15rpx; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/fire.png" mode="widthFix" class="view-image"></image>
-						</view>
-					</view>
-					<view class="padding-left-sm">
-						<view class="text-xl text-bold">
-							<text class="margin-right-xs">火灾</text>
-						</view>
-						<view class="text-gray">
-							<view>119</view>
-						</view>
+			<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;"
+				@click="makePhoneCall('119')">
+				<view class="basis-xs radius">
+					<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+						<image src="/static/icon/fire.png" mode="widthFix" class="view-image"></image>
 					</view>
 				</view>
-			</navigator>
+				<view class="padding-left-sm">
+					<view class="text-xl text-bold">
+						<text class="margin-right-xs">火灾</text>
+					</view>
+					<view class="text-gray">
+						<view>119</view>
+					</view>
+				</view>
+			</view>
 		</view>
 
 		<view class="flex flex-wrap justify-between margin-top-sm">
-			<navigator hover-class="none" url="/pages/basics/appointment/appointment">
-				<view class="flex flex-wrap bg-white margin-left-sm padding"
-					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/hospital.png" mode="widthFix" class="view-image"></image>
-						</view>
-					</view>
-					<view class="content padding-left-sm">
-						<view class="text-xl text-bold">
-							<text>医疗救护</text>
-						</view>
-						<view class="text-gray">
-							<view>120</view>
-						</view>
+			<view class="flex flex-wrap bg-white margin-left-sm padding"
+				style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="makePhoneCall('120')">
+				<view class="basis-xs radius">
+					<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+						<image src="/static/icon/hospital.png" mode="widthFix" class="view-image"></image>
 					</view>
 				</view>
-			</navigator>
+				<view class="content padding-left-sm">
+					<view class="text-xl text-bold">
+						<text>医疗救护</text>
+					</view>
+					<view class="text-gray">
+						<view>120</view>
+					</view>
+				</view>
+			</view>
 
-			<navigator hover-class="none" url="/pages/basics/visit/visit">
-				<view class="flex flex-wrap bg-white margin-right-sm padding"
-					style="border-radius: 15rpx; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/car.png" mode="widthFix" class="view-image"></image>
-						</view>
-					</view>
-					<view class="padding-left-sm">
-						<view class="text-xl text-bold">
-							<text class="margin-right-xs">交通事故</text>
-						</view>
-						<view class="text-gray">
-							<view>122</view>
-						</view>
+			<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;"
+				@click="makePhoneCall('122')">
+				<view class="basis-xs radius">
+					<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+						<image src="/static/icon/car.png" mode="widthFix" class="view-image"></image>
 					</view>
 				</view>
-			</navigator>
+				<view class="padding-left-sm">
+					<view class="text-xl text-bold">
+						<text class="margin-right-xs">交通事故</text>
+					</view>
+					<view class="text-gray">
+						<view>122</view>
+					</view>
+				</view>
+			</view>
 		</view>
 
 
@@ -248,6 +239,7 @@
 				this.emergency.message = this.message + "【" + this.location.address + "】附近";
 				console.log("emergency", this.emergency)
 
+
 				wx.showLoading({
 					title: '发送呼救信息中...'
 				});
@@ -285,7 +277,7 @@
 				}).then(res => {
 					if (res.success) {
 						if (res.data != null) {
-							this.isCalling = res.data.isCalling == 1;
+							this.isCalling = res.data.status == 1;
 							this.emergency = res.data
 						} else {
 							this.isCalling = false;
@@ -299,17 +291,31 @@
 
 			stopEmergencyCall() {
 				console.log("停止紧急呼救")
+				wx.showLoading({
+					title: "停止呼救中",
+					mask: true
+				})
 				stopEmergencyCall({
 					userId: this.userInfo.id
 				}).then(res => {
 					if (res.success) {
+						wx.showToast({
+							title: "停止成功",
+							icon: "success"
+						})
 						this.getCurrentCall()
 					}
 				}).catch(err => {
 					console.log(err);
-					
+
 				})
-				
+
+			},
+
+			makePhoneCall(phoneNumber) {
+				wx.makePhoneCall({
+					phoneNumber: phoneNumber
+				}).catch(err => {})
 			}
 		}
 	}

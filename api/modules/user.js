@@ -12,8 +12,8 @@ export const wxlogin2 = (params) => {
 	return postRequest('/user/wxlogin2', params)
 }
 
-export const getUserInfo = (params) => {
-	return postRequest('/user/getUserInfo', params)
+export const getUserInfo = () => {
+	return getRequest('/user/getUserInfo')
 }
 
 export const getAllUser = (params) => {

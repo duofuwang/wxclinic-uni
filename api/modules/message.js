@@ -19,5 +19,5 @@ export const getContactList = (params) => {
 
 // 上传文件
 export const upload = (params) => {
-	return uploadRequest('/message/upload', params)
+	return uploadRequest('/system/obs/upload', params)
 }

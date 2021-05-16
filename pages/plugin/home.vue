@@ -9,7 +9,8 @@
 			</view>
 
 			<view class="flex flex-wrap justify-between">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-left-sm padding"
+					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="toChild(4, '儿童健康')">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/child.png" mode="widthFix" class="view-image"></image>
@@ -24,7 +25,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-right-sm padding"
+					style="border-radius: 15rpx; width: 350rpx;" @click="toChild(5, '老年人健康')">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/old_1.png" mode="widthFix" class="view-image"></image>
@@ -48,7 +50,8 @@
 			</view>
 
 			<view class="flex flex-wrap justify-between margin-top-sm">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-left-sm padding"
+					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="toChild(6, '常见急救')">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/first_aid.png" mode="widthFix" class="view-image"></image>
@@ -63,7 +66,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-right-sm padding"
+					style="border-radius: 15rpx; width: 350rpx;" @click="toChild(7, '家庭急救')">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/home.png" mode="widthFix" class="view-image"></image>
@@ -81,7 +85,8 @@
 			</view>
 
 			<view class="flex flex-wrap justify-between margin-top-sm">
-				<view class="flex flex-wrap bg-white margin-left-sm padding" style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-left-sm padding"
+					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;" @click="toChild(8, '疾病突发')">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/disease.png" mode="widthFix" class="view-image"></image>
@@ -96,7 +101,8 @@
 						</view>
 					</view>
 				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding" style="border-radius: 15rpx; width: 350rpx;">
+				<view class="flex flex-wrap bg-white margin-right-sm padding"
+					style="border-radius: 15rpx; width: 350rpx;" @click="toChild(9, '户外急救')">
 					<view class="basis-xs radius">
 						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
 							<image src="/static/icon/outdoor.png" mode="widthFix" class="view-image"></image>
@@ -119,10 +125,11 @@
 				</view>
 			</view>
 
-			<view class="cu-card">
-				<view class="cu-item bg-img shadow-blur" style="height: 350rpx; border-radius: 15rpx; background-image: url(../../static/hair_3.jpg);">
+			<view class="cu-card" @click="handleInfo">
+				<view class="cu-item bg-img shadow-blur"
+					:style="'height: 350rpx; border-radius: 15rpx; background-image: url(' + rumorArticle.banner + ');'">
 					<view class="cardTitle text-white">
-						多吃黑芝麻能生发？
+						{{ rumorArticle.title }}
 					</view>
 				</view>
 			</view>
@@ -137,6 +144,9 @@
 </template>
 
 <script>
+	import {
+		getNewRumorArticle
+	} from "@/api/modules/article.js"
 	export default {
 		name: "components",
 		data() {
@@ -145,22 +155,45 @@
 					title: '多吃黑芝麻能生发？',
 					img: '/static/food.jpg',
 					url: '../plugin/home'
-				}]
+				}],
+				rumorArticle: {
+					banner: ''
+				}
 			};
 		},
+		mounted() {
+			this.getRumorArticle()
+		},
 		methods: {
-			toChild(e) {
+			toChild(type, title) {
+				let data = {
+					type: type,
+					title: title
+				}
 				uni.navigateTo({
-					url: e.currentTarget.dataset.url
+					url: '/pages/plugin/article/article?data=' + encodeURIComponent(JSON.stringify(data))
 				})
 			},
+
+			getRumorArticle() {
+				getNewRumorArticle().then(res => {
+					this.rumorArticle = res.data
+					console.log(this.rumorArticle)
+				})
+			},
+
+			handleInfo() {
+				uni.navigateTo({
+					url: '/pages/plugin/article/detail?articleId=' + this.rumorArticle.id
+				})
+			}
 		},
 	}
 </script>
 
 <style>
 	.page {
-		height:100vh;
+		height: 100vh;
 	}
 
 	.cardTitle {
