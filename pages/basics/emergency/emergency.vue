@@ -26,16 +26,18 @@
 			</view>
 
 
-			<view class="flex align-center">
-				<view class="content">
-					<view class="cu-avatar bg-white">
-						<image src="/static/icon/report.png" mode="widthFix"></image>
-					</view>
-					<view class="text-gray align-center">
-						<view>记录</view>
+			<navigator hover-class="none" url="/pages/basics/emergency/record">
+				<view class="flex align-center">
+					<view class="content">
+						<view class="cu-avatar bg-white">
+							<image src="/static/icon/report.png" mode="widthFix"></image>
+						</view>
+						<view class="text-gray align-center">
+							<view>记录</view>
+						</view>
 					</view>
 				</view>
-			</view>
+			</navigator>
 		</view>
 
 		<!-- 紧急呼救面板 -->
@@ -162,6 +164,9 @@
 		stopEmergencyCall
 	} from "@/api/modules/emergency.js"
 
+	// 播放器
+	const innerAudioContext = uni.createInnerAudioContext();
+
 	export default {
 		data() {
 			return {
@@ -174,6 +179,16 @@
 				modalName: "",
 
 				isCalling: false
+			}
+		},
+
+		watch: {
+			isCalling(val) {
+				if (val) {
+					this.playWarningAudio()
+				} else {
+					this.stopPlay()
+				}
 			}
 		},
 
@@ -192,6 +207,15 @@
 		},
 
 		methods: {
+			playWarningAudio() {
+				innerAudioContext.loop = true;
+				innerAudioContext.src = require('../../../static/audio/alert.mp3');
+				innerAudioContext.play();
+			},
+			stopPlay() {
+				innerAudioContext.stop();
+			},
+
 			getLocation() {
 				wx.showLoading({
 					title: '定位中',

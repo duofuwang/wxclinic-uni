@@ -1,7 +1,7 @@
 import {postRequest, getRequest, uploadRequest, deleteRequest} from '@/api/request.js'
 
-export const getUserMedicalRecord = () => {
-	return getRequest('/medical-record/getUserMedicalRecord')
+export const getUserMedicalRecord = (params) => {
+	return getRequest('/medical-record/getUserMedicalRecord', params)
 }
 
 export const deleteMedicalRecord = (params) => {

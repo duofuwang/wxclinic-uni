@@ -39,7 +39,7 @@
 	export default {
 		data() {
 			return {
-				isCard: false,
+				isCard: true,
 				articleList: [],
 				type: '',
 				title: '',

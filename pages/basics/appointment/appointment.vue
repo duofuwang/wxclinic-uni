@@ -9,11 +9,13 @@
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<view class="cu-form-group margin-top">
 					<view class="title text-bold">预约人</view>
-					<input :value="userInfo==null?'':userInfo.nickname" placeholder="昵称" disabled name="nickname"></input>
+					<input :value="userInfo==null?'':userInfo.realName||userInfo.nickname" placeholder="昵称" disabled
+						name="nickname"></input>
 				</view>
 				<view class="cu-form-group">
 					<view class="title text-bold">手机号码</view>
-					<input :value="userInfo==null?'':userInfo.phoneNumber" placeholder="预留手机号" name="phoneNumber"></input>
+					<input :value="userInfo==null?'':userInfo.phoneNumber" placeholder="预留手机号"
+						name="phoneNumber"></input>
 					<text class='cuIcon-phone text-orange'></text>
 				</view>
 
@@ -35,13 +37,15 @@
 				</view>
 
 				<view class="cu-form-group margin-top">
-					<textarea maxlength="-1" :disabled="modalName!=null" :value="textareaAValue" @input="textareaAInput" placeholder="请简要描述病情……" name="description"></textarea>
+					<textarea maxlength="-1" :disabled="modalName!=null" :value="textareaAValue" @input="textareaAInput"
+						placeholder="请简要描述病情……" name="description"></textarea>
 				</view>
 				<view class="cu-form-group">
 					<text>快速添加：</text>
 					<scroll-view scroll-x="true" class="kite-classify-scroll">
 						<view class="kite-classify-cell" v-for="(item, index) in quickAddBtnData" :key="index">
-							<button class="cu-btn round" @click="quickAdd(quickAddBtnData[index].content)">{{quickAddBtnData[index].title}}</button>
+							<button class="cu-btn round"
+								@click="quickAdd(quickAddBtnData[index].content)">{{quickAddBtnData[index].title}}</button>
 						</view>
 					</scroll-view>
 				</view>
@@ -56,7 +60,8 @@
 				</view>
 				<view class="cu-form-group">
 					<view class="grid col-4 grid-square flex-sub">
-						<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage" :data-url="imgList[index]">
+						<view class="bg-img" v-for="(item,index) in imgList" :key="index" @tap="ViewImage"
+							:data-url="imgList[index]">
 							<image :src="imgList[index]" mode="aspectFill"></image>
 							<view class="cu-tag bg-red" @tap.stop="DelImg" :data-index="index">
 								<text class='cuIcon-close'></text>
@@ -86,7 +91,7 @@
 	import {
 		saveAppointment
 	} from '@/api/modules/appointment.js'
-	
+
 	import {
 		apply
 	} from "@/api/modules/application.js"
@@ -136,7 +141,8 @@
 					var [error, res] = data;
 					// {"sysTime2":"2021-03-02 14:21:35","sysTime1":"20210302142135"}
 					// res.data.sysTime2 = 2021-03-02 14:21:35
-					this.time = res.data.sysTime2.substring(res.data.sysTime2.lastIndexOf(" ") + 1, res.data.sysTime2.lastIndexOf(":"))
+					this.time = res.data.sysTime2.substring(res.data.sysTime2.lastIndexOf(" ") + 1, res.data.sysTime2
+						.lastIndexOf(":"))
 					this.date = res.data.sysTime2.substring(0, res.data.sysTime2.lastIndexOf(" "))
 
 				})
@@ -186,10 +192,10 @@
 			textareaAInput(e) {
 				this.textareaAValue = e.detail.value
 			},
-			
+
 			// 向病情描述输入框快速添加内容
 			quickAdd(content) {
-				this.textareaAValue.length==0?this.textareaAValue+=content:this.textareaAValue += "\r\n" + content
+				this.textareaAValue.length == 0 ? this.textareaAValue += content : this.textareaAValue += "\r\n" + content
 			},
 
 			// 提交请求
@@ -202,42 +208,71 @@
 				appointment.userId = this.userInfo.id;
 				appointment.time = appointment.date + " " + appointment.time;
 				appointment.type = 1
-				
+
 				// 提交前将换行符替换为<br/>，才能保存到数据库
-				appointment.description = appointment.description.replace(/\n|\r\n/g,"<br/>");
-				
+				appointment.description = appointment.description.replace(/\n|\r\n/g, "<br/>");
+
 				console.log(appointment)
 				if (this.checkForm(appointment)) {
+					// 未选择图片
+					if (this.imgList.length == 0) {
+						this.saveApplication(appointment)
+						return
+					}
+					var img = []
+					this.imgList.forEach((item, index) => {
+						uni.uploadFile({
+							url: this.$api.upload,
+							filePath: item,
+							name: 'file',
+							header: {
+								'token': uni.getStorageSync("token")
+							},
+							formData: {
+								'userId': uni.getStorageSync("userInfo").id
+							},
+							success: (res) => {
+								img.push(JSON.parse(res.data).data)
+								// 等最后一个文件上传完成
+								if (index == this.imgList.length - 1) {
+									appointment.image = img.join(',')
+									this.saveApplication(appointment)
+								}
+							}
+						});
+					})
+				}
+			},
 
-					apply(appointment)
-						.then(res => {
-							if (res.success) {
-								setTimeout(() => {
-									wx.hideLoading()
-									wx.showToast({
-										title: '提交成功'
-									})
-								}, 500)
-								setTimeout(function() {
-									// 提交成功 跳转至成功页面
-									uni.redirectTo({
-										url: 'success?item=' + encodeURIComponent(JSON.stringify(appointment))
-									})
-								}, 1500)
-							} else {
+			// 保存
+			saveApplication(appointment) {
+				apply(appointment)
+					.then(res => {
+						if (res.success) {
+							setTimeout(() => {
 								wx.hideLoading()
 								wx.showToast({
-									title: res.data == null ? '服务器错误' : res.data,
-									icon: "error"
+									title: '提交成功'
 								})
-							}
-						})
-						.catch(data => {
-							console.log(data)
-						})
-				}
-
-
+							}, 500)
+							setTimeout(function() {
+								// 提交成功 跳转至成功页面
+								uni.redirectTo({
+									url: 'success?item=' + encodeURIComponent(JSON.stringify(
+										appointment))
+								})
+							}, 1500)
+						} else {
+							wx.hideLoading()
+							wx.showToast({
+								title: res.data == null ? '服务器错误' : res.data,
+								icon: "error"
+							})
+						}
+					})
+					.catch(data => {
+						console.log(data)
+					})
 			},
 
 			// 校验数据合法性

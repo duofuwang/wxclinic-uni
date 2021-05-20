@@ -8,8 +8,8 @@
 		<form @submit="formSubmit">
 			<scroll-view scroll-y="true" style="height: 100%;">
 				<view class="cu-form-group margin-top">
-					<view class="title text-bold">预约人</view>
-					<input :value="userInfo==null?'':userInfo.nickname" placeholder="昵称" disabled
+					<view class="title text-bold">申请人</view>
+					<input :value="userInfo==null?'':userInfo.realName||userInfo.nickname" placeholder="预约人" disabled
 						name="nickname"></input>
 				</view>
 				<view class="cu-form-group">
@@ -170,7 +170,7 @@
 
 				})
 			this.userInfo = uni.getStorageSync("userInfo");
-			
+
 			this.getApplicationFee()
 
 		},
@@ -258,43 +258,71 @@
 				visit.type = 2
 				// 提交前将换行符替换为<br/>，才能保存到数据库
 				visit.description = visit.description.replace(/\n|\r\n/g, "<br/>");
-				var day = this.picker[visit.day];
 				console.log(visit)
 				if (this.checkForm(visit)) {
-					console.log("visit: ", visit)
-					apply(visit)
-						.then(res => {
-							if (res.success) {
-								visit.day = day;
-
-								var data = {
-									visit: visit,
-									visit_order: res.data
+					// 未选择图片
+					if (this.imgList.length == 0) {
+						this.saveApplication(visit)
+						return
+					}
+					var img = []
+					this.imgList.forEach((item, index) => {
+						uni.uploadFile({
+							url: this.$api.upload,
+							filePath: item,
+							name: 'file',
+							header: {
+								'token': uni.getStorageSync("token")
+							},
+							formData: {
+								'userId': uni.getStorageSync("userInfo").id
+							},
+							success: (res) => {
+								img.push(JSON.parse(res.data).data)
+								// 等最后一个文件上传完成
+								if (index == this.imgList.length - 1) {
+									visit.image = img.join(',')
+									this.saveApplication(visit)
 								}
-								setTimeout(() => {
-									wx.hideLoading()
-									wx.showToast({
-										title: '提交成功'
-									})
-								}, 500)
-								setTimeout(function() {
-									// 提交成功 跳转至成功页面
-									uni.redirectTo({
-										url: 'payment?data=' + encodeURIComponent(JSON.stringify(data))
-									})
-								}, 1500)
-							} else {
-								wx.hideLoading()
-								wx.showToast({
-									title: res.data == null ? '服务器错误' : res.data,
-									icon: "error"
-								})
 							}
-						})
-						.catch(data => {
-							console.log(data)
-						})
+						});
+					})
 				}
+			},
+
+			// 保存
+			saveApplication(visit) {
+				apply(visit)
+					.then(res => {
+						if (res.success) {
+							var day = this.picker[visit.day];
+							visit.day = day;
+							var data = {
+								visit: visit,
+								visit_order: res.data
+							}
+							setTimeout(() => {
+								wx.showToast({
+									title: '提交成功'
+								})
+							}, 500)
+							setTimeout(function() {
+								// 提交成功 跳转至成功页面
+								uni.redirectTo({
+									url: 'payment?data=' + encodeURIComponent(JSON.stringify(data))
+								})
+							}, 1500)
+						} else {
+							wx.hideLoading()
+							wx.showToast({
+								title: res.data == null ? '服务器错误' : res.data,
+								icon: "error"
+							})
+						}
+					})
+					.catch(data => {
+						console.log(data)
+					})
 			},
 
 			// 校验数据合法性

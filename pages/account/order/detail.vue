@@ -7,25 +7,6 @@
 
 		<view>
 			<view class="cu-card padding-sm">
-				<view class="bg-red padding text-center shadow-blur light" style="border-radius: 15rpx;"
-					v-if="application.status==2">
-					<view class="text-xl">已拒绝。</view>
-					<view class="margin-top-sm"></view>
-				</view>
-				<view class="bg-green padding text-center shadow-blur light" style="border-radius: 15rpx;"
-					v-else-if="application.status==1">
-					<view class="text-xl">已通过。</view>
-					<view class="margin-top-sm"></view>
-				</view>
-				<view class="bg-gray padding text-center shadow-blur light" style="border-radius: 15rpx;"
-					v-else-if="application.status==3">
-					<view class="text-xl">已撤销。</view>
-					<view class="margin-top-sm"></view>
-				</view>
-				<view class="bg-orange padding text-center shadow-blur light" style="border-radius: 15rpx;" v-else>
-					<view class="text-xl">审核中。</view>
-					<view class="margin-top-sm"></view>
-				</view>
 			</view>
 
 			<view class="cu-card">
@@ -182,6 +163,7 @@
 		},
 		onLoad(option) {
 			this.application = JSON.parse(decodeURIComponent(option.item))
+
 			if (this.application.image) {
 				this.application.image = this.application.image.split(",")
 			}

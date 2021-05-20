@@ -57,10 +57,10 @@
 				<view class="cu-list menu-avatar" style="border-radius: 15rpx;" v-for="(contact, index) in contactList"
 					:key="index" @click="goChat(contact)">
 					<view class="cu-item-no-border-bottom">
-						<view class="cu-avatar lg bg-white"
-							style="background-image:url(https://s3.ax1x.com/2021/03/07/6uLvgU.png);"></view>
+						<view class="cu-avatar lg bg-white round" :style="'background-image:url(' + contact.avatarUrl + ');'">
+						</view>
 						<view class="content">
-							<view class="text-grey">{{contact.nickname}}</view>
+							<view class="text-grey">{{contact.realName || contact.nickname}}</view>
 							<view class="text-gray text-sm flex">
 								<view class="text-cut" v-if="contact.type == 'text'">
 									{{ contact == null ? '' : contact.content}}
@@ -77,7 +77,9 @@
 							</view>
 						</view>
 						<view class="action">
-							<view class="text-grey text-xs">{{$u.timeFormat(contact.createTime, 'hh:MM')}}</view>
+							<view class="text-grey text-xs" v-if="contact.createTime">
+								{{$u.timeFormat(contact.createTime, 'hh:MM')}}
+							</view>
 							<view class="cu-tag round bg-red sm" v-if="contact.unreadNum!=0">{{contact.unreadNum}}
 							</view>
 						</view>
@@ -88,7 +90,7 @@
 			<view class="margin-top">
 				<u-divider bg-color="#F8FBFF" fontSize="30">呵护生命 绿色健康</u-divider>
 			</view>
-
+			<view class="cu-tabbar-height"></view>
 			<view class="cu-tabbar-height"></view>
 		</scroll-view>
 	</view>
@@ -118,7 +120,7 @@
 		mounted() {},
 		methods: {
 			goChat(contact) {
-				this.$emit("signMsg")
+				// this.$emit("signMsg")
 				var data = {
 					contact: contact,
 					unreadMsgList: this.unreadMsgList
@@ -134,9 +136,7 @@
 
 			// 获取最近会话列表和最后一条聊天记录
 			getContactList() {
-				getContactList({
-					userId: uni.getStorageSync("userInfo").id
-				}).then(res => {
+				getContactList().then(res => {
 					console.log("getContactList res: ", res)
 				}).catch(data => {
 					console.log("getContactList error: ", data)

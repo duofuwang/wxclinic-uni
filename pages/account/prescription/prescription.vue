@@ -1,9 +1,10 @@
 <template>
 	<view class="page bg-light-light">
-		<scroll-view scroll-y style="height: 100%;" class="bg-light-light" @scrolltolower="reachBottom">
+		<!-- 全部 -->
+		<scroll-view scroll-y class="bg-light-light" style="height: 100%; width: 100%;" @scrolltolower="reachBottom">
 			<cu-custom bgColor="bg-green-new" :isBack="true">
 				<block slot="backText">返回</block>
-				<block slot="content">我的病历</block>
+				<block slot="content">我的处方</block>
 			</cu-custom>
 			<view class="page-box">
 				<view class="order" v-for="(item, index) in medicalRecordList" :key="index">
@@ -12,22 +13,6 @@
 							<view class="title u-line-2">
 								<text class="text-bold">诊断：</text>
 								{{ item.doctorDiagnosis }}
-							</view>
-						</view>
-					</view>
-					<view class="item text-xl">
-						<view class="content">
-							<view class="title u-line-2">
-								<text class="text-bold">主诉：</text>
-								{{ item.chiefComplaint }}
-							</view>
-						</view>
-					</view>
-					<view class="item text-xl">
-						<view class="content">
-							<view class="title u-line-2">
-								<text class="text-bold">治疗方法：</text>
-								{{ item.treatmentMethod }}
 							</view>
 						</view>
 					</view>
@@ -48,13 +33,10 @@
 						</view>
 					</view>
 					<view class="bottom">
-						<view class="logistics btn" @click="deleteMedicalRecord(item.id)">删除</view>
 						<view class="evaluate btn" @click="handleDetail(item)">查看</view>
 					</view>
 				</view>
-			</view>
-			<view class="margin-xl">
-				<u-loadmore :status="loadStatus" :load-text="loadText" bgColor="bg-light-light"></u-loadmore>
+				<u-loadmore :status="loadStatus" :load-text="loadText" bgColor="bg-light-light" class="margin"></u-loadmore>
 			</view>
 		</scroll-view>
 	</view>
@@ -76,8 +58,9 @@
 					nomore: '没有更多了'
 				},
 
+				// 分页
 				pageNum: 1,
-				pageSize: 5,
+				pageSize: 5
 			};
 		},
 		onLoad() {
@@ -86,7 +69,7 @@
 		computed: {},
 		methods: {
 			reachBottom() {
-				this.pageNum++;
+				this.pageNum++
 				this.getUserMedicalRecord()
 			},
 
@@ -102,7 +85,7 @@
 						this.pageNum--;
 						return
 					}
-					this.medicalRecordList = [...this.medicalRecordList, ...res.data.records]
+					this.medicalRecordList = [...this.medicalRecordList, ...records]
 					this.loadStatus = 'loadmore'
 				}).catch(err => {
 					this.pageNum--;
@@ -113,35 +96,7 @@
 			handleDetail(item) {
 				console.log("handleDetail: ", item)
 				uni.navigateTo({
-					url: '/pages/basics/record/detail?item=' + encodeURIComponent(JSON.stringify(item))
-				})
-			},
-			// 删除申请
-			deleteMedicalRecord(id) {
-				console.log(id)
-				uni.showModal({
-					title: '确认要删除吗?',
-					confirmText: '删除',
-					success: (e) => {
-						console.log(e)
-						if (e.confirm) {
-							deleteMedicalRecord({
-								ids: id
-							}).then(res => {
-								if (res.success) {
-									// 更新数据
-									this.getUserMedicalRecord();
-
-									uni.showToast({
-										title: '删除成功',
-										icon: 'success'
-									})
-								}
-							}).catch(data => {
-								console.log(data)
-							})
-						}
-					}
+					url: '/pages/account/prescription/detail?item=' + encodeURIComponent(JSON.stringify(item))
 				})
 			},
 		}

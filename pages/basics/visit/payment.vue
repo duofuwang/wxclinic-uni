@@ -42,7 +42,7 @@
 <script>
 	import {
 		payment
-	} from '@/api/modules/visit_order.js'
+	} from '@/api/modules/order.js'
 
 	export default {
 		data() {

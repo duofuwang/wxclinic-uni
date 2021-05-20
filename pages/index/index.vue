@@ -164,9 +164,10 @@
 				getUnreadMsg({
 					userId: this.userInfo.id
 				}).then(res => {
+					this.unreadNum = res.data.length
+					this.newMsg = false
 					if (res.data.length > 0) {
 						this.newMsg = true
-						this.unreadNum = res.data.length
 						this.unreadMsgList = res.data
 						// this.getContactList()
 						console.log("unreadMsgList: ", this.unreadMsgList)
@@ -184,9 +185,7 @@
 
 			// 获取最近会话列表和最后一条聊天记录
 			getContactList() {
-				getContactList({
-					userId: this.userInfo.id
-				}).then(res => {
+				getContactList().then(res => {
 					if (res.success) {
 						console.log("getContactList", res)
 						this.contactList = res.data

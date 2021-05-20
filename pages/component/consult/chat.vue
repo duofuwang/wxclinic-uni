@@ -2,7 +2,7 @@
 	<view>
 		<cu-custom bgColor="bg-green-new" :isBack="true">
 			<block slot="backText">返回</block>
-			<block slot="content">{{contact.nickname}}</block>
+			<block slot="content">{{contact.realName||contact.nickname}}</block>
 		</cu-custom>
 		<view class="cu-chat" id="chatBox">
 			<view class="cu-item" :class="messageList[index].fromId==userInfo.id?'self':''"
@@ -155,7 +155,7 @@
 			this.unreadMsgList = JSON.parse(decodeURIComponent(option.data)).unreadMsgList
 
 			// 获取近期消息
-			this.getRecentMsg(this.userInfo.id, this.contact.friendId)
+			this.getRecentMsg(this.contact.friendId)
 
 			// 启动消息监听
 			this.onSocketMessage()
@@ -280,9 +280,8 @@
 			},
 
 			// 获取最近消息
-			getRecentMsg(userId, friendId) {
+			getRecentMsg(friendId) {
 				getRecentMsg({
-					userId: userId,
 					friendId: friendId,
 					num: 100
 				}).then(res => {

@@ -28,12 +28,13 @@
 								<view class="content padding-left-sm">
 									<view class="text-xxl">
 										<text
-											class="margin-right-xs">{{ user.nickname==null?'未登录':user.nickname }}</text>
+											class="margin-right-xs">{{ user.nickname==null?'未登录':user.realName||user.nickname }}</text>
 									</view>
 									<view class="text-gray text-xl margin-top-sm">
 										<!-- <text class="margin-right-xs">{{ user.phoneNumber }}</text> -->
 										<view class="cu-tag line-gray round">
-											{{ user.phoneNumber==null?'点击去授权登录~':user.phoneNumber }}</view>
+											{{ user.phoneNumber==null?'点击去授权登录~':user.phoneNumber }}
+										</view>
 									</view>
 								</view>
 							</view>
@@ -59,38 +60,43 @@
 			</view>
 		</view> -->
 			<view class="flex flex-wrap justify-between margin-top">
-				<view class="flex flex-wrap bg-white margin-left-sm padding"
-					style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/pill.png" mode="widthFix" class="view-image"></image>
+				<navigator class="content" hover-class="none" url="/pages/account/prescription/prescription">
+					<view class="flex flex-wrap bg-white margin-left-sm padding"
+						style="border-radius: 15rpx; padding-right: 0; width: 350rpx;">
+						<view class="basis-xs radius">
+							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+								<image src="/static/icon/pill.png" mode="widthFix" class="view-image"></image>
+							</view>
+						</view>
+						<view class="content padding-left-sm">
+							<view class="text-xl text-bold">
+								<text>我的处方</text>
+							</view>
+							<view class="text-gray">
+								<view>看处方防遗忘</view>
+							</view>
 						</view>
 					</view>
-					<view class="content padding-left-sm">
-						<view class="text-xl text-bold">
-							<text>我的处方</text>
+				</navigator>
+
+				<navigator class="content" hover-class="none" url="/pages/account/order/order">
+					<view class="flex flex-wrap bg-white margin-right-sm padding"
+						style="border-radius: 15rpx; width: 350rpx;">
+						<view class="basis-xs radius">
+							<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
+								<image src="/static/icon/bill.png" mode="widthFix" class="view-image"></image>
+							</view>
 						</view>
-						<view class="text-gray">
-							<view>看处方防遗忘</view>
-						</view>
-					</view>
-				</view>
-				<view class="flex flex-wrap bg-white margin-right-sm padding"
-					style="border-radius: 15rpx; width: 350rpx;">
-					<view class="basis-xs radius">
-						<view class="cu-avatar bg-white" style="height: 80rpx; width: 80rpx;">
-							<image src="/static/icon/bill.png" mode="widthFix" class="view-image"></image>
-						</view>
-					</view>
-					<view class="padding-left-sm">
-						<view class="text-xl text-bold">
-							<text class="margin-right-xs">结算订单</text>
-						</view>
-						<view class="text-gray">
-							<view>查看诊疗订单</view>
+						<view class="padding-left-sm">
+							<view class="text-xl text-bold">
+								<text class="margin-right-xs">结算订单</text>
+							</view>
+							<view class="text-gray">
+								<view>查看诊疗订单</view>
+							</view>
 						</view>
 					</view>
-				</view>
+				</navigator>
 			</view>
 
 			<view class="cu-list menu sm-border card-menu-sm margin-top">
@@ -118,7 +124,6 @@
 
 			<view class="margin-top">
 				<view style="width: 90%; margin: 0 auto;">
-					<!-- <u-button type="error" shape="circle" @click="test">测试</u-button> -->
 					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="logout">退出登录</button>
 				</view>
 			</view>
