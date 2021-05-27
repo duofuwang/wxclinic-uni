@@ -1,7 +1,7 @@
 import app from '../main.js'
 
 // 连接的url
-const webSocketUrl = "ws://localhost:1024/channel";
+const webSocketUrl = "wss://dopoiv.space/wss";
 
 // socket连接状态
 var socketOpen = false;

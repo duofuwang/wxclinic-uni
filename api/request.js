@@ -1,4 +1,5 @@
-const baseUrl = "http://localhost:8686/clinic" //公共路径
+// const baseUrl = "http://localhost:8787/clinic" //公共路径
+const baseUrl = "https://dopoiv.space/clinic" //公共路径
 const api = {
 	upload: baseUrl + "/system/obs/upload"
 }
