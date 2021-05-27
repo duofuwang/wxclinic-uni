@@ -51,7 +51,7 @@
 
 <script>
 	import {
-		wxlogin, wxlogin2
+		wxlogin
 	} from '../../api/modules/user.js'
 
 	import {

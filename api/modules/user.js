@@ -5,11 +5,7 @@ export const hello = (params) => {
 }
 
 export const wxlogin = (params) => {
-	return postRequest('/user/wxlogin', params)
-}
-
-export const wxlogin2 = (params) => {
-	return postRequest('/user/wxlogin2', params)
+	return postRequest('/wxlogin', params)
 }
 
 export const getUserInfo = () => {
