@@ -88,9 +88,6 @@
 </template>
 
 <script>
-	import {
-		saveAppointment
-	} from '@/api/modules/appointment.js'
 
 	import {
 		apply

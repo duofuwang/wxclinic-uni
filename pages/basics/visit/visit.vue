@@ -102,10 +102,6 @@
 	} from "@/api/location.js"
 
 	import {
-		saveVisit
-	} from "@/api/modules/visit.js"
-
-	import {
 		apply
 	} from "@/api/modules/application.js"
 
