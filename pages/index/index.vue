@@ -116,7 +116,7 @@
 
 			// 更新account组件
 			this.updateAccountComponent()
-			
+
 			this.getConfig()
 
 			// 进入其他页面时，uni.onSocketMessage会被覆盖
@@ -145,6 +145,11 @@
 			onSocketMessage() {
 				let that = this;
 				uni.onSocketMessage(function(res) {
+					that.websocket.heartCheck.reset().start()
+					if (res.data == "PONG") {
+						console.log(res.data);
+						return
+					}
 					console.log("index: ", JSON.parse(res.data))
 					that.getUnreadMsg()
 					that.getContactList()
@@ -221,7 +226,7 @@
 			// 获取诊所配置
 			getConfig() {
 				getConfig().then(res => {
-					if(res.success) {
+					if (res.success) {
 						uni.setStorageSync("config", res.data)
 					}
 				})

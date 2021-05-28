@@ -540,6 +540,11 @@
 			onSocketMessage() {
 				let that = this;
 				uni.onSocketMessage(function(res) {
+					that.websocket.heartCheck.reset().start()
+					if (res.data == "PONG") {
+						console.log(res.data);
+						return
+					}
 					console.log(JSON.parse(res.data));
 					var data = JSON.parse(res.data);
 					that.receiveMessage(data.message)
