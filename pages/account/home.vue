@@ -127,59 +127,6 @@
 					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="logout">退出登录</button>
 				</view>
 			</view>
-			<view class="cu-tabbar-height"></view>
-
-			<view class="margin-top margin-bottom-xxl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
-						@click="test">建立WebSocket连接1</button>
-				</view>
-			</view>
-
-			<view class="margin-top margin-bottom-xl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="send">发送一条信息1</button>
-				</view>
-			</view>
-
-			<view class="margin-top margin-bottom-xl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
-						@click="test2">建立WebSocket连接2</button>
-				</view>
-			</view>
-
-			<view class="margin-top margin-bottom-xl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="send2">发送一条信息2</button>
-				</view>
-			</view>
-
-			<view class="margin-top margin-bottom-xl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="close">关闭连接1</button>
-				</view>
-			</view>
-
-			<view class="margin-top margin-bottom-xl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;" @click="close2">关闭连接2</button>
-				</view>
-			</view>
-
-			<view class="margin-top margin-bottom-xl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
-						@click="setStorage()">setStorage</button>
-				</view>
-			</view>
-
-			<view class="margin-top margin-bottom-xl">
-				<view style="width: 90%; margin: 0 auto;">
-					<button class="cu-btn line-red round lg shadow" style="width: 100%;"
-						@click="getAllUser()">获取用户信息</button>
-				</view>
-			</view>
 
 			<view class="margin-top">
 				<u-divider bg-color="#F8FBFF" fontSize="30">呵护生命 绿色健康</u-divider>

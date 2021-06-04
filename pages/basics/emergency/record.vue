@@ -28,7 +28,7 @@
 							<view class="content">
 								<view class="title u-line-2">
 									<text class="text-bold">备注：</text>
-									{{ item.remark }}
+									{{ item.remark || "无" }}
 								</view>
 							</view>
 						</view>
